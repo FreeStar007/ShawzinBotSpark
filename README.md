@@ -51,4 +51,4 @@ There are 3 settings you can change at this moment:
 # New Message
 我基于原项目地址MIT许可开创该项目，并沿用原项目许可
 原项目地址：https://github.com/ianespana/ShawzinBot
-MIT开源
+感谢[@ianespana](https://github.com/ianespana)大佬的原版
