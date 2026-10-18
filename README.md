@@ -1,54 +1,47 @@
-![ShawzinBot Logo](https://github.com/ianespana/ShawzinBot/blob/master/ShawzinBot/Resources/Shawzin.png)
+![**ShawzinBot**Logo](https://github.com/FreeStar007/ShawzinBotSpark/blob/master/ShawzinBot/Resources/Shawzin.png)
 
-ShawzinBot is a program which converts a MIDI input or file to a series of key presses for the Shawzin. Any MIDI input works with this script (a MIDI keyboard, a virtual MIDI channel, etc), as well as [Standard MIDI Files (SMF)](https://www.midi.org/specifications/category/smf-specifications).
+**ShawzinBot**是一个能把**MIDI**输入或文件转换成一系列按键操作、用来弹 Shawzin 的小工具，任何**MIDI**输入都能用（MIDI 键盘、虚拟**MIDI**通道之类的都行），也支持标准**MIDI**文件
 
-# Virus Scan
-You can check the virus scan for the precompiled version [here](https://www.virustotal.com/gui/file/3cb941d7918c21f79d749aba8434b8ef55a8eadc024277c94502e3f89f4e40df/detection).
+# 下载
+最新版的ShawzinBot地址[这里](https://github.com/FreeStar007/ShawzinBotSpark/releases/latest)
 
-# Download
-You can always get the latest version of ShawzinBot [here](https://github.com/FreeStar007/ShawzinBotSpark/releases/latest).
+# 关于
 
-# About
+### ShawzinBot是什么
+**ShawzinBot**是一款第三方软件，能读取**MIDI**文件（.mid）并在《星际战甲》里把内容弹出来，原理就是模拟按键，Shawzin 就是这么个玩法
 
-### What's the ShawzinBot?
+### 安全吗
+**ShawzinBot**完全不会干扰游戏运行，不注入新代码，也不修改任何已有代码，更不会碰内存，所以压根算不上外挂，放心用就好
 
-ShawzinBot is a third party software that can read MIDI files (.mid) and play their content in Warframe. It simulates key presses, and that's how the Shawzin is played.
+### 怎么实现的
+**ShawzinBot**基于**C#**的 [DryWetMIDI**MIDI**库（作者 melanchall）](https://www.midi.org/specifications/category/smf-specifications) 开发，这个库负责加载并播放**MIDI**文件，每个音符事件都会被 **ShawzinBot**拦下来，根据音符 ID 按下不同的按键组合来发声，另外它还支持外接**MIDI**设备（键盘、合成器之类的）
 
-### Is it safe?
+# 快速上手
+用起来挺简单的，只要别把组件拆散，它放电脑哪儿都行，不需要安装，双击**ShawzinBot.exe**就能跑起来（记住不能删掉**ShazinBot.exe.config**文件）
 
-ShawzinBot does not in any way interfere with gameplay, nor does it inject new code or modify existing one. It also does not tamper with memory in any way, thus is can't be catalogued as a cheat and should be safe to use.
+## 用法
+程序跑起来后你会看到这样的窗口
 
-### How does it work?
+![**ShawzinBot**Overview](https://github.com/FreeStar007/ShawzinBotSpark/blob/main/ShawzinBot/Resources/app.png)
 
-ShawzinBot is built on the C# [DryWetMIDI midi library by melanchall](https://github.com/melanchall/drywetmidi). This library loads a MIDI file and plays it. Every note event is intercepted by ShawzinBot and depending on note's ID, a different combination of keys is pressed to play the sound. ShawzinBot also allows the usage of external MIDI devices (keyboard, synthesizers, etc).
+左上角有个按钮，点它就能打开并加载**MIDI**文件，文件打开后点播放、切回游戏就行了，**ShawzinBot**只有在你切回《星际战甲》时才会动你的键盘，平时不会瞎按
 
-# Getting Started
-Using ShawzinBot is quite easy. As long as you don't separate any of it's components, it can sit anywhere in your computer. No installation is required, all you need to do is double click ShawzinBot.exe and you'll be good to go! Please note, **you MUST match the the game's scale with the one displayed by the bot!**
+想用外接**MIDI**设备的话，从下拉菜单里选一下就能弹了，要是没看到你的设备，点下拉框右边的刷新按钮重新加载一下
 
-## Usage
-Once the program is running you'll see the following window:
+程序默认会勾选所有可用的**MIDI**音轨，想换别的音轨或多选，在“MIDI追踪（音轨）”处勾选就行，很简单
 
-![ShawzinBot Overview](https://github.com/FreeStar007/ShawzinBotSpark/blob/main/ShawzinBot/Resources/app.png)
+目前有2个可以调的设置：
+* 哇音 - 游戏里演奏时类似颤音，默认关闭
+* 移调 - 自动移调那些弹不了的音符，默认开启
 
-On the top left corner there's a button you can click to open and load MIDI files. Once a file is open, all you have to do is click play and tab back into game. ShawzinBot will not mess with your keyboard unless you're tabbed into Warframe!
+# 特别感谢
+* [@lilggamegenius](https://github.com/lilggamegenius) - 帮忙搞定了游戏里的按键映射
+* [/u/T2k5](https://www.reddit.com/user/T2k5/) - 写了最初的完整键盘脚本
 
-To use an external MIDI device, all you have to do is select if from the dropdown menu and start playing. If you do not see your device, just click the reload button to the right of the dropdown.
+# 注意事项
+* 同时按多个键会有问题，这是三线琴本身的局限，把音符稍微错开一点点就能解决
 
-The program defaults to playing the first MIDI track found inside the file. If you want to play a different track or tracks, all you have to do is open the "MIDI Tracks" dropdown and select the tracks there. Simple.
-
-There are 3 settings you can change at this moment:
-* Whammy - This will enable the whammy. Default off.
-* Transpose notes - This setting will attempt to transpose notes that are unplayable. Default on.
-* Play MIDI through speakers - This will play the MIDI file through your main sound device. Useful for testing songs. Default off.
-
-# Special Thanks
-* [@lilggamegenius](https://github.com/lilggamegenius) - For helping with figuring out the key presses in game.
-* [/u/T2k5](https://www.reddit.com/user/T2k5/) - For making the original full keyboard script.
-
-# Notes
-* Multiple keys at the same time don't really work correctly due to Shawzin limitations, you can offset notes by a tiny bit to fix this issue.
-
-# New Message
-我基于原项目地址MIT许可开创该项目，并沿用原项目许可
+# 新消息
+我基于原项目地址的MIT许可开的新坑，沿用原项目许可
 原项目地址：https://github.com/ianespana/ShawzinBot
-感谢[@ianespana](https://github.com/ianespana)大佬的原版
+感谢[@ianespana](https://github.com/ianespana)大佬的原项目支持
