@@ -28,7 +28,7 @@ Using ShawzinBot is quite easy. As long as you don't separate any of it's compon
 ## Usage
 Once the program is running you'll see the following window:
 
-![ShawzinBot Overview](https://github.com/ianespana/ShawzinBot/blob/master/ShawzinBot/Resources/Overview.png)
+![ShawzinBot Overview](https://github.com/FreeStar007/ShawzinBotSpark/blob/main/ShawzinBot/Resources/Overview.png)
 
 On the top left corner there's a button you can click to open and load MIDI files. Once a file is open, all you have to do is click play and tab back into game. ShawzinBot will not mess with your keyboard unless you're tabbed into Warframe!
 
