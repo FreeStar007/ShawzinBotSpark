@@ -6,7 +6,7 @@ ShawzinBot is a program which converts a MIDI input or file to a series of key p
 You can check the virus scan for the precompiled version [here](https://www.virustotal.com/gui/file/3cb941d7918c21f79d749aba8434b8ef55a8eadc024277c94502e3f89f4e40df/detection).
 
 # Download
-You can always get the latest version of ShawzinBot [here](https://github.com/ianespana/ShawzinBot/releases/latest).
+You can always get the latest version of ShawzinBot [here](https://github.com/FreeStar007/ShawzinBotSpark/releases/latest).
 
 # About
 
