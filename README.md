@@ -1,4 +1,4 @@
-![**ShawzinBot**Logo](https://github.com/FreeStar007/ShawzinBotSpark/blob/master/ShawzinBotSpark/Resources/Shawzin.png)
+![**ShawzinBot**Logo](https://github.com/FreeStar007/ShawzinBotSpark/blob/master/ShawzinBot/Resources/Shawzin.png)
 
 **ShawzinBot**是一个能把**MIDI**输入或文件转换成一系列按键操作、用来弹 Shawzin 的小工具，任何**MIDI**输入都能用（MIDI 键盘、虚拟**MIDI**通道之类的都行），也支持标准**MIDI**文件
 
