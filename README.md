@@ -1,6 +1,6 @@
 ![**ShawzinBot**Logo](https://github.com/FreeStar007/ShawzinBotSpark/blob/main/ShawzinBot/Resources/Shawzin.png)
 
-**ShawzinBot**是一个能把**MIDI**输入或文件转换成一系列按键操作、用来弹 Shawzin 的小工具，任何**MIDI**输入都能用（**MIDI**键盘、虚拟**MIDI**通道之类的都行），也支持标准**MIDI**文件
+**ShawzinBot**是一个能把**MIDI**输入或文件转换成一系列按键操作、用来弹**三线琴**的小工具，任何**MIDI**输入都能用（**MIDI**键盘、虚拟**MIDI**通道之类的都行），也支持标准**MIDI**文件
 
 # 下载
 [最新版的**ShawzinBot**下载地址](https://github.com/FreeStar007/ShawzinBotSpark/releases/latest)
@@ -8,7 +8,7 @@
 # 关于
 
 ### ShawzinBot是什么？
-**ShawzinBot**是一款第三方软件，能读取**MIDI**文件（.mid）并在《星际战甲》里把内容弹出来，原理就是模拟按键来弹三线琴
+**ShawzinBot**是一款第三方软件，能读取**MIDI**文件（.mid）并在《星际战甲》里把内容弹出来，原理就是模拟按键来弹**三线琴**
 
 ### 安全吗？
 **ShawzinBot**完全不会干扰游戏运行，不注入新代码，也不修改任何已有代码，更不会碰内存，所以压根算不上外挂，放心用就好
@@ -39,7 +39,7 @@
 * [/u/T2k5](https://www.reddit.com/user/T2k5/) - 写了最初的完整键盘脚本
 
 # 注意事项
-* 同时按多个键会有问题，这是三线琴本身的局限，把音符稍微错开一点点就能解决
+* 同时按多个键会有问题，这是**三线琴**本身的局限，把音符稍微错开一点点就能解决
 
 # 新消息
 我基于原项目地址的MIT许可开的新坑，沿用原项目许可

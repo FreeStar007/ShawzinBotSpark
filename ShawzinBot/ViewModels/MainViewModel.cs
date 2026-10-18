@@ -244,22 +244,8 @@ namespace ShawzinBot.ViewModels {
         public bool PlayThroughSpeakers {
             get => _playThroughSpeakers;
             set {
-                //_playThroughSpeakers = value;
                 _playThroughSpeakers = false;
                 SetUpProperties("PlayThroughSpeakers", value);
-
-                /*if (playback != null)
-                {
-                    if (!_playThroughSpeakers && device != null)
-                    {
-                        device.Dispose();
-                    }
-                    else if (_playThroughSpeakers && (device == null))
-                    {
-                        device = OutputDevice.GetByName("Microsoft GS Wavetable Synth");
-                        playback.OutputDevice = device;
-                    }
-                }*/
             }
         }
 
