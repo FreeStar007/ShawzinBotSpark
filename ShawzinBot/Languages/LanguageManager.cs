@@ -6,7 +6,7 @@ namespace ShawzinBot {
         private static readonly Uri[] DictUris = {
             new Uri("Languages/zh-CN.xaml", UriKind.Relative),
             new Uri("Languages/en-US.xaml", UriKind.Relative),
-            new Uri("Languages/jp-JP.xaml", UriKind.Relative)
+            new Uri("Languages/ja-JP.xaml", UriKind.Relative)
         };
 
         public static event EventHandler LanguageChanged;
@@ -26,31 +26,24 @@ namespace ShawzinBot {
             }
 
             var merged = Application.Current.Resources.MergedDictionaries;
-            if (merged.Count > 0 && ReferenceEquals(merged[merged.Count - 1], CurrentDict)) {
+            if (merged.Count > 0 && ReferenceEquals(merged[merged.Count - 1], _currentDict)) {
                 merged[merged.Count - 1] = dict;
             }
             else {
                 merged.Add(dict);
             }
 
-            CurrentDict = dict;
-            CurrentIndex = languageIndex;
+            _currentDict = dict;
             Properties.Settings.Default.LanguageIndex = languageIndex;
             Properties.Settings.Default.Save();
 
             LanguageChanged?.Invoke(null, EventArgs.Empty);
         }
 
-        public static int CurrentIndex { get; private set; }
-
-        private static ResourceDictionary CurrentDict;
+        private static ResourceDictionary _currentDict;
 
         public static void ApplySavedOrDefault() {
             Apply(Properties.Settings.Default.LanguageIndex);
-        }
-
-        public static void Toggle() {
-            Apply(CurrentIndex == 0 ? 1 : 0);
         }
 
         public static string GetString(string key) {

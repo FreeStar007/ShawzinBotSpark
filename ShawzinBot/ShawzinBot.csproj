@@ -151,7 +151,7 @@
         <None Include="App.config" />
     </ItemGroup>
     <ItemGroup>
-        <Page Include="Languages\jp-JP.xaml" />
+        <Page Include="Languages\ja-JP.xaml" />
         <Page Include="Views\MainView.xaml">
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
