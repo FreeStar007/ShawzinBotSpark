@@ -18,9 +18,11 @@ namespace ShawzinBot.ViewModels {
         #region Constructor
 
         public MainViewModel() {
+            EnableVibrato = Settings.Default.EnableVibrato;
+            TransposeNotes = Settings.Default.TransposeNotes;
+            HistoryMusicPath = Settings.Default.HistoryMusicPath;
             VersionString = _programVersion.ToString();
-            if (Settings.Default.HistoryMusicPath != "" && File.Exists(Settings.Default.HistoryMusicPath))
-                SetUpMidi(Settings.Default.HistoryMusicPath);
+            if (HistoryMusicPath != "" && File.Exists(HistoryMusicPath)) SetUpMidi(HistoryMusicPath);
 
             MidiInputs.Add(new MidiInputModel("无"));
 
@@ -38,10 +40,7 @@ namespace ShawzinBot.ViewModels {
             MidiSpeeds.Add(new MidiSpeedModel("2", 2));
 
             SelectedMidiSpeed = MidiSpeeds[3];
-
-            EnableVibrato = Settings.Default.EnableVibrato;
-            TransposeNotes = Settings.Default.TransposeNotes;
-            HistoryMusicPath = Settings.Default.HistoryMusicPath;
+            
             PlaybackCurrentTimeWatcher.Instance.PollingInterval = TimeSpan.FromSeconds(1);
         }
 
@@ -240,14 +239,15 @@ namespace ShawzinBot.ViewModels {
                 SetUpProperties("TransposeNotes", value);
             }
         }
+
         public string HistoryMusicPath {
             get => _historyMusicPath;
             set {
                 _historyMusicPath = value;
-                NotifyOfPropertyChange(() => HistoryMusicPath);
+                SetUpProperties("HistoryMusicPath", value);
             }
         }
-        
+
 
         public string Scale {
             get => _scale;
@@ -309,7 +309,7 @@ namespace ShawzinBot.ViewModels {
             openFileDialog.Filter = "MIDI file|*.mid;*.midi;"; // Filter to only midi files
             if (openFileDialog.ShowDialog() != true) return;
             ClearMidi();
-            SetUpProperties("HistoryMusicPath", openFileDialog.FileName);
+            HistoryMusicPath = openFileDialog.FileName;
             SetUpMidi(openFileDialog.FileName);
         }
 
@@ -404,7 +404,7 @@ namespace ShawzinBot.ViewModels {
 
         public void Clear() {
             ClearMidi();
-            SetUpProperties("HistoryMusicPath", "");
+            HistoryMusicPath = "";
         }
 
         public void RefreshDevices() {
@@ -444,7 +444,7 @@ namespace ShawzinBot.ViewModels {
                     if (note != null && note.Velocity <= 0) return;
 
                     //Check if the user has tabbed out of warframe, and stop playback to avoid Scale issues
-                    if (!(ActionManager.PlayNote(note, EnableVibrato, TransposeNotes)))
+                    if (!ActionManager.PlayNote(note, EnableVibrato, TransposeNotes))
                         PlayPause();
                     UpdateScale(ActionManager.activeScale);
                     return;
