@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-
     <sys:String x:Key="WindowTitle">三线琴自动演奏器</sys:String>
     <sys:String x:Key="MidiInputDevice">MIDI输入设备</sys:String>
     <sys:String x:Key="MidiTracks">MIDI追踪（音轨）</sys:String>
@@ -22,5 +21,4 @@
     <sys:String x:Key="ScaleName8">五声大调</sys:String>
     <sys:String x:Key="ErrorTitle">错误</sys:String>
     <sys:String x:Key="ErrorMessageFormat">发生了一个错误：{0}</sys:String>
-
 </ResourceDictionary>

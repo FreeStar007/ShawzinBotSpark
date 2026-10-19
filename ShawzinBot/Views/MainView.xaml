@@ -48,6 +48,13 @@
                     Width="20" Height="20" Margin="40,5"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Background="{x:Null}"
                     BorderBrush="{x:Null}">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="MenuChinese" Header="中文" Click="OnSelectChinese" />
+                        <MenuItem x:Name="MenuEnglish" Header="English" Click="OnSelectEnglish" />
+                        <MenuItem x:Name="MenuJapanese" Header="日本語" Click="OnSelectJapanese" />
+                    </ContextMenu>
+                </Button.ContextMenu>
                 <materialDesign:PackIcon Kind="Language" Width="20" Height="20" HorizontalAlignment="Center"
                                          VerticalAlignment="Center">
                     <materialDesign:PackIcon.Foreground>

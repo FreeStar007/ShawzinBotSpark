@@ -1,7 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-
+    
     <sys:String x:Key="WindowTitle">ShawzinBot</sys:String>
     <sys:String x:Key="MidiInputDevice">MIDI Input Device</sys:String>
     <sys:String x:Key="MidiTracks">MIDI Tracks</sys:String>
@@ -22,5 +22,4 @@
     <sys:String x:Key="ScaleName8">Pentatonic Major</sys:String>
     <sys:String x:Key="ErrorTitle">Error</sys:String>
     <sys:String x:Key="ErrorMessageFormat">An error occurred: {0}</sys:String>
-
 </ResourceDictionary>

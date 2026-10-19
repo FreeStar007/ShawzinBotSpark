@@ -18,16 +18,32 @@ namespace ShawzinBot.Views {
             DragMove();
         }
 
-        public void OnChangeLanguage(object sender, RoutedEventArgs e) {
-            LanguageManager.Toggle();
+        private void OnChangeLanguage(object sender, RoutedEventArgs e) {
+            if (sender is FrameworkElement fe && fe.ContextMenu != null) {
+                fe.ContextMenu.PlacementTarget = fe;
+                fe.ContextMenu.IsOpen = true;
+            }
         }
 
-        public void OnCloseProgram(object sender, RoutedEventArgs e) {
+        private void OnSelectChinese(object sender, RoutedEventArgs e) {
+            LanguageManager.Apply(0);
+        }
+
+        private void OnSelectEnglish(object sender, RoutedEventArgs e) {
+            LanguageManager.Apply(1);
+        }
+
+        private void OnSelectJapanese(object sender, RoutedEventArgs e) {
+            LanguageManager.Apply(2);
+        }
+            
+        private void OnCloseProgram(object sender, RoutedEventArgs e) {
             PlaybackCurrentTimeWatcher.Instance.Dispose();
             Close();
         }
+        
 
-        public void OnMinimizeProgram(object sender, RoutedEventArgs e) {
+        private void OnMinimizeProgram(object sender, RoutedEventArgs e) {
             WindowState = WindowState.Minimized;
         }
     }

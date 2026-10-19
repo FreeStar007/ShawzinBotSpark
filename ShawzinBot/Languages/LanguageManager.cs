@@ -5,7 +5,8 @@ namespace ShawzinBot {
     public static class LanguageManager {
         private static readonly Uri[] DictUris = {
             new Uri("Languages/zh-CN.xaml", UriKind.Relative),
-            new Uri("Languages/en-US.xaml", UriKind.Relative)
+            new Uri("Languages/en-US.xaml", UriKind.Relative),
+            new Uri("Languages/jp-JP.xaml", UriKind.Relative)
         };
 
         public static event EventHandler LanguageChanged;
