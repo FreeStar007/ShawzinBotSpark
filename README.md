@@ -1,3 +1,5 @@
+[中文](README.md) | [English](README.en.md) | [日本語](README.ja.md)
+
 ![**ShawzinBot**Logo](https://github.com/FreeStar007/ShawzinBotSpark/blob/main/ShawzinBot/Resources/Shawzin.png)
 
 **ShawzinBot**是一个能把**MIDI**输入或文件转换成一系列按键操作、用来弹**三线琴**的小工具，任何**MIDI**输入都能用（**MIDI**键盘、虚拟**MIDI**通道之类的都行），也支持标准**MIDI**文件
