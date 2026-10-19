@@ -4,14 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Timers;
+using System.Windows.Forms;
 using Caliburn.Micro;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Devices;
 using Melanchall.DryWetMidi.Interaction;
-using Microsoft.Win32;
 using ShawzinBot.Models;
 using ShawzinBot.Properties;
 using InputDevice = Melanchall.DryWetMidi.Devices.InputDevice;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using Screen = Caliburn.Micro.Screen;
+using Timer = System.Timers.Timer;
 
 namespace ShawzinBot.ViewModels {
     public class MainViewModel : Screen {
@@ -267,15 +270,25 @@ namespace ShawzinBot.ViewModels {
         }
 
         private void SetUpMidi(string filePath) {
-            MidiTracks.Clear();
-            _midiFile = MidiFile.Read(filePath, new ReadingSettings {
-                InvalidChannelEventParameterValuePolicy = InvalidChannelEventParameterValuePolicy.ReadValid,
-                InvalidMetaEventParameterValuePolicy = InvalidMetaEventParameterValuePolicy.SnapToLimits,
-                SilentNoteOnPolicy = SilentNoteOnPolicy.NoteOff,
-                UnknownChannelEventPolicy = UnknownChannelEventPolicy.SkipStatusByte,
-                UnexpectedTrackChunksCountPolicy = UnexpectedTrackChunksCountPolicy.Ignore,
-                MissedEndOfTrackPolicy = MissedEndOfTrackPolicy.Ignore
-            });
+            ClearMidi();
+            try {
+                _midiFile = MidiFile.Read(filePath, new ReadingSettings {
+                    InvalidChannelEventParameterValuePolicy = InvalidChannelEventParameterValuePolicy.ReadValid,
+                    InvalidMetaEventParameterValuePolicy = InvalidMetaEventParameterValuePolicy.SnapToLimits,
+                    SilentNoteOnPolicy = SilentNoteOnPolicy.NoteOff,
+                    UnknownChannelEventPolicy = UnknownChannelEventPolicy.SkipStatusByte,
+                    UnexpectedTrackChunksCountPolicy = UnexpectedTrackChunksCountPolicy.Ignore,
+                    MissedEndOfTrackPolicy = MissedEndOfTrackPolicy.Ignore,
+                    NotEnoughBytesPolicy = NotEnoughBytesPolicy.Ignore
+                });
+            }
+            catch (Exception nebe) {
+                MessageBox.Show($"发生了一个错误：{nebe}", "错误", MessageBoxButtons.OK);
+                ClearMidi();
+                HistoryMusicPath = "";
+                return;
+            }
+
             SongName = Path.GetFileNameWithoutExtension(filePath);
             _tempoMap = _midiFile.GetTempoMap();
             TimeSpan midiFileDuration = _midiFile.GetDuration<MetricTimeSpan>();
@@ -301,7 +314,6 @@ namespace ShawzinBot.ViewModels {
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "MIDI file|*.mid;*.midi;"; // Filter to only midi files
             if (openFileDialog.ShowDialog() != true) return;
-            ClearMidi();
             HistoryMusicPath = openFileDialog.FileName;
             SetUpMidi(openFileDialog.FileName);
         }
