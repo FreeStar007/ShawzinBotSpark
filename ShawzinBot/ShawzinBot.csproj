@@ -120,45 +120,36 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="Models\MidiSpeedModel.cs"/>
-        <Compile Include="Models\MidiTrackModel.cs"/>
-        <Compile Include="Models\MidiInputModel.cs"/>
-        <Compile Include="ViewModels\MainViewModel.cs"/>
+        <Compile Include="Languages\LanguageManager.cs" />
+        <Compile Include="Models\MidiSpeedModel.cs" />
+        <Compile Include="Models\MidiTrackModel.cs" />
+        <Compile Include="Models\MidiInputModel.cs" />
+        <Compile Include="ViewModels\MainViewModel.cs" />
         <Compile Include="Views\MainView.xaml.cs">
             <DependentUpon>MainView.xaml</DependentUpon>
         </Compile>
-        <Compile Include="ActionManager.cs"/>
+        <Compile Include="ActionManager.cs" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Bootstrapper.cs"/>
+        <Compile Include="Bootstrapper.cs" />
         <Compile Include="Properties\AssemblyInfo.cs">
             <SubType>Code</SubType>
-        </Compile>
-        <Compile Include="Properties\Resources.Designer.cs">
-            <AutoGen>True</AutoGen>
-            <DesignTime>True</DesignTime>
-            <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
         <Compile Include="Properties\Settings.Designer.cs">
             <AutoGen>True</AutoGen>
             <DependentUpon>Settings.settings</DependentUpon>
             <DesignTimeSharedInput>True</DesignTimeSharedInput>
         </Compile>
-        <EmbeddedResource Include="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-        <None Include="app.manifest"/>
-        <None Include="packages.config"/>
+        <None Include="app.manifest" />
+        <None Include="packages.config" />
         <None Include="Properties\Settings.settings">
             <Generator>SettingsSingleFileGenerator</Generator>
             <LastGenOutput>Settings.Designer.cs</LastGenOutput>
         </None>
     </ItemGroup>
     <ItemGroup>
-        <None Include="App.config"/>
+        <None Include="App.config" />
     </ItemGroup>
-    <ItemGroup/>
     <ItemGroup>
         <Page Include="Views\MainView.xaml">
             <SubType>Designer</SubType>
@@ -166,7 +157,7 @@
         </Page>
     </ItemGroup>
     <ItemGroup>
-        <Resource Include="Shawzin.ico"/>
+        <Resource Include="Shawzin.ico" />
     </ItemGroup>
     <ItemGroup>
         <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -179,6 +170,16 @@
             <ProductName>.NET Framework 3.5 SP1</ProductName>
             <Install>false</Install>
         </BootstrapperPackage>
+    </ItemGroup>
+    <ItemGroup>
+      <Page Include="Languages\zh-CN.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Include="Languages\en-US.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <SubType>Designer</SubType>
+      </Page>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -42,8 +42,23 @@
                 </materialDesign:PackIcon>
             </Button>
 
-            <TextBlock Text="三线琴自动演奏器" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
+            <TextBlock Text="{DynamicResource WindowTitle}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            
+            <Button x:Name="ChangeLanguage" Click="OnChangeLanguage" HorizontalAlignment="Left" VerticalAlignment="Center"
+                    Width="20" Height="20" Margin="40,5"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Background="{x:Null}"
+                    BorderBrush="{x:Null}">
+                <materialDesign:PackIcon Kind="Language" Width="20" Height="20" HorizontalAlignment="Center"
+                                         VerticalAlignment="Center">
+                    <materialDesign:PackIcon.Foreground>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox">
+                            <GradientStop Color="#FFFFFFFF" />
+                            <GradientStop Color="#FFFFFF00" Offset="0.757" />
+                        </LinearGradientBrush>
+                    </materialDesign:PackIcon.Foreground>
+                </materialDesign:PackIcon>
+            </Button>
+            
             <Button x:Name="CloseProgram" Click="OnCloseProgram" HorizontalAlignment="Right" VerticalAlignment="Center"
                     Width="20" Height="20" Margin="10,5"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Background="{x:Null}"
@@ -87,21 +102,6 @@
                 <RowDefinition Height="130" />
             </Grid.RowDefinitions>
 
-            <Ellipse Grid.Row="0" Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center"
-                     StrokeThickness="1">
-                <Ellipse.Stroke>
-                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                        <GradientStop Color="#FFFFFFFF" />
-                        <GradientStop Color="#FFFFFF00" Offset="0.757" />
-                    </LinearGradientBrush>
-                </Ellipse.Stroke>
-                <Ellipse.Fill>
-                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                        <GradientStop Color="#FFFFFFFF" />
-                        <GradientStop Color="#FFFFFF00" Offset="0.757" />
-                    </LinearGradientBrush>
-                </Ellipse.Fill>
-            </Ellipse>
             <Grid Grid.Row="1" VerticalAlignment="Center">
                 <TextBlock x:Name="SongName" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 <Grid VerticalAlignment="Top" Margin="0,30,0,0">
@@ -172,7 +172,7 @@
                 <TextBlock x:Name="TotalTime" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="7,0" />
             </Grid>
             <Grid Grid.Row="3" VerticalAlignment="Center" Background="#44444444" Height="60">
-                <TextBlock Text="MIDI输入设备" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5" />
+                <TextBlock Text="{DynamicResource MidiInputDevice}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5" />
 
                 <Button x:Name="RefreshDevices" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="30"
                         Height="30" Margin="50,8" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
@@ -194,7 +194,7 @@
                           DisplayMemberPath="DeviceName" />
             </Grid>
             <Grid Grid.Row="4" VerticalAlignment="Center" Background="#44444444" Height="110">
-                <TextBlock Text="MIDI追踪（音轨）" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5" />
+                <TextBlock Text="{DynamicResource MidiTracks}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5" />
                 <!--ComboBox x:Name="MidiTracks" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,8" Width="240" Height="30" Background="#FF444444" SelectionChanged="MidiTracksSelectionChanged">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -215,14 +215,14 @@
                 </ScrollViewer>
             </Grid>
             <Grid Grid.Row="5" VerticalAlignment="Center" Background="#44444444" Height="120">
-                <TextBlock Text="设置" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5" />
-                <TextBlock x:Name="Scale" Text="请校准音阶至：半音" VerticalAlignment="Top" HorizontalAlignment="Left"
+                <TextBlock Text="{DynamicResource SettingsTitle}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5" />
+                <TextBlock x:Name="Scale" VerticalAlignment="Top" HorizontalAlignment="Left"
                            Margin="10,25" />
-                <CheckBox x:Name="EnableVibrato" Content="哇音" VerticalAlignment="Top" HorizontalAlignment="Left"
+                <CheckBox x:Name="EnableVibrato" Content="{DynamicResource Vibrato}" VerticalAlignment="Top" HorizontalAlignment="Left"
                           Margin="10,45,0,0" ClickMode="Press" />
-                <CheckBox x:Name="TransposeNotes" Content="转调" VerticalAlignment="Top" HorizontalAlignment="Left"
+                <CheckBox x:Name="TransposeNotes" Content="{DynamicResource Transpose}" VerticalAlignment="Top" HorizontalAlignment="Left"
                           Margin="10,65,0,0" ClickMode="Press" />
-                <TextBlock Text="播放速度:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,91,0,0" />
+                <TextBlock Text="{DynamicResource PlaySpeed}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,91,0,0" />
                 <ComboBox x:Name="MidiSpeeds" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="75,85,0,0"
                           Width="65" Height="30" Background="#FF444444"
                           SelectedItem="{Binding Path=SelectedMidiSpeed, Mode=TwoWay}"

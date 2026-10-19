@@ -18,6 +18,10 @@ namespace ShawzinBot.Views {
             DragMove();
         }
 
+        public void OnChangeLanguage(object sender, RoutedEventArgs e) {
+            LanguageManager.Toggle();
+        }
+
         public void OnCloseProgram(object sender, RoutedEventArgs e) {
             PlaybackCurrentTimeWatcher.Instance.Dispose();
             Close();

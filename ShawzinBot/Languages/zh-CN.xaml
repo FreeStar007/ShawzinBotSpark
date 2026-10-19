@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="WindowTitle">三线琴自动演奏器</sys:String>
+    <sys:String x:Key="MidiInputDevice">MIDI输入设备</sys:String>
+    <sys:String x:Key="MidiTracks">MIDI追踪（音轨）</sys:String>
+    <sys:String x:Key="SettingsTitle">设置</sys:String>
+    <sys:String x:Key="Vibrato">哇音</sys:String>
+    <sys:String x:Key="Transpose">转调</sys:String>
+    <sys:String x:Key="PlaySpeed">播放速度:</sys:String>
+    <sys:String x:Key="DeviceNone">无</sys:String>
+    <sys:String x:Key="ScaleFormat">请校准音阶至：{0}</sys:String>
+    <sys:String x:Key="ScaleName0">半音</sys:String>
+    <sys:String x:Key="ScaleName1">六式音阶</sys:String>
+    <sys:String x:Key="ScaleName2">大调</sys:String>
+    <sys:String x:Key="ScaleName3">小调</sys:String>
+    <sys:String x:Key="ScaleName4">平调子</sys:String>
+    <sys:String x:Key="ScaleName5">弗里几亚属音</sys:String>
+    <sys:String x:Key="ScaleName6">阳调式</sys:String>
+    <sys:String x:Key="ScaleName7">五声小调</sys:String>
+    <sys:String x:Key="ScaleName8">五声大调</sys:String>
+    <sys:String x:Key="ErrorTitle">错误</sys:String>
+    <sys:String x:Key="ErrorMessageFormat">发生了一个错误：{0}</sys:String>
+
+</ResourceDictionary>

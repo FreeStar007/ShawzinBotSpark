@@ -9,6 +9,7 @@ namespace ShawzinBot {
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e) {
+            LanguageManager.ApplySavedOrDefault();
             DisplayRootViewFor<MainViewModel>();
         }
     }

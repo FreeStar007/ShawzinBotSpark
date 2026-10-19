@@ -1,0 +1,26 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="WindowTitle">ShawzinBot</sys:String>
+    <sys:String x:Key="MidiInputDevice">MIDI Input Device</sys:String>
+    <sys:String x:Key="MidiTracks">MIDI Tracks</sys:String>
+    <sys:String x:Key="SettingsTitle">Settings</sys:String>
+    <sys:String x:Key="Vibrato">Vibrato</sys:String>
+    <sys:String x:Key="Transpose">Transpose</sys:String>
+    <sys:String x:Key="PlaySpeed">Speed:</sys:String>
+    <sys:String x:Key="DeviceNone">None</sys:String>
+    <sys:String x:Key="ScaleFormat">Scale: {0}</sys:String>
+    <sys:String x:Key="ScaleName0">Chromatic</sys:String>
+    <sys:String x:Key="ScaleName1">Hexatonic</sys:String>
+    <sys:String x:Key="ScaleName2">Major</sys:String>
+    <sys:String x:Key="ScaleName3">Minor</sys:String>
+    <sys:String x:Key="ScaleName4">Hirajoshi</sys:String>
+    <sys:String x:Key="ScaleName5">Phrygian</sys:String>
+    <sys:String x:Key="ScaleName6">Yo</sys:String>
+    <sys:String x:Key="ScaleName7">Pentatonic Minor</sys:String>
+    <sys:String x:Key="ScaleName8">Pentatonic Major</sys:String>
+    <sys:String x:Key="ErrorTitle">Error</sys:String>
+    <sys:String x:Key="ErrorMessageFormat">An error occurred: {0}</sys:String>
+
+</ResourceDictionary>

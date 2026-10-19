@@ -27,7 +27,7 @@ namespace ShawzinBot.ViewModels {
             VersionString = _programVersion.ToString();
             if (HistoryMusicPath != "" && File.Exists(HistoryMusicPath)) SetUpMidi(HistoryMusicPath);
 
-            MidiInputs.Add(new MidiInputModel("无"));
+            MidiInputs.Add(new MidiInputModel(LanguageManager.GetString("DeviceNone"), true));
 
             foreach (InputDevice device in InputDevice.GetAll()) MidiInputs.Add(new MidiInputModel(device.Name));
 
@@ -38,7 +38,16 @@ namespace ShawzinBot.ViewModels {
 
             SelectedMidiSpeed = MidiSpeeds[3];
 
+            UpdateScale(0);
+
+            LanguageManager.LanguageChanged += OnLanguageChanged;
+
             PlaybackCurrentTimeWatcher.Instance.PollingInterval = TimeSpan.FromSeconds(1);
+        }
+
+        private void OnLanguageChanged(object sender, EventArgs e) {
+            RefreshDevices();
+            UpdateScale(ActionManager.activeScale);
         }
 
         #endregion
@@ -50,8 +59,8 @@ namespace ShawzinBot.ViewModels {
         private double _maximumTime = 1;
         private string _currentTime = "0:00";
         private string _totalTime = "0:00";
-        private string _playPauseIcon = "Play";
-        private string _scale = "请校准音阶至：半音";
+       private string _playPauseIcon = "Play";
+        private string _scale;
 
         private BindableCollection<MidiInputModel> _midiInputs = new BindableCollection<MidiInputModel>();
         private BindableCollection<MidiTrackModel> _midiTracks = new BindableCollection<MidiTrackModel>();
@@ -64,16 +73,16 @@ namespace ShawzinBot.ViewModels {
         private string _historyMusicPath = "";
         private bool _ignoreSliderChange;
 
-        private readonly string[] _scaleArray = {
-            "半音",
-            "六式音阶",
-            "大调",
-            "小调",
-            "平调子",
-            "弗里几亚属音",
-            "阳调式",
-            "五声小调",
-            "五声大调"
+        private static readonly string[] _scaleNameKeys = {
+            "ScaleName0",
+            "ScaleName1",
+            "ScaleName2",
+            "ScaleName3",
+            "ScaleName4",
+            "ScaleName5",
+            "ScaleName6",
+            "ScaleName7",
+            "ScaleName8"
         };
 
         private IEnumerable<TrackChunk> _midiTrackChunks;
@@ -183,7 +192,7 @@ namespace ShawzinBot.ViewModels {
                 _selectedMidiInput = value;
                 _inputDevice?.Dispose();
 
-                if (value?.DeviceName != null && value.DeviceName != "无") {
+                if (value != null && !value.IsNone) {
                     _inputDevice = InputDevice.GetByName(value.DeviceName);
                     _inputDevice.EventReceived += OnNoteEvent;
                     _inputDevice.StartEventsListening();
@@ -283,7 +292,8 @@ namespace ShawzinBot.ViewModels {
                 });
             }
             catch (Exception nebe) {
-                MessageBox.Show($"发生了一个错误：{nebe}", "错误", MessageBoxButtons.OK);
+                MessageBox.Show(string.Format(LanguageManager.GetString("ErrorMessageFormat"), nebe),
+                    LanguageManager.GetString("ErrorTitle"), MessageBoxButtons.OK);
                 ClearMidi();
                 HistoryMusicPath = "";
                 return;
@@ -414,7 +424,7 @@ namespace ShawzinBot.ViewModels {
 
         public void RefreshDevices() {
             MidiInputs.Clear();
-            MidiInputs.Add(new MidiInputModel("无"));
+            MidiInputs.Add(new MidiInputModel(LanguageManager.GetString("DeviceNone"), true));
 
             foreach (var device in InputDevice.GetAll()) MidiInputs.Add(new MidiInputModel(device.Name));
 
@@ -422,7 +432,10 @@ namespace ShawzinBot.ViewModels {
         }
 
         private void UpdateScale(int scaleIndex) {
-            Scale = $"请校准音阶至：{_scaleArray[scaleIndex]}";
+            if (scaleIndex < 0 || scaleIndex >= _scaleNameKeys.Length) return;
+            var format = LanguageManager.GetString("ScaleFormat");
+            var name = LanguageManager.GetString(_scaleNameKeys[scaleIndex]);
+            Scale = string.Format(format, name);
         }
 
         #endregion
@@ -465,6 +478,10 @@ namespace ShawzinBot.ViewModels {
             if (note != null && note.Velocity <= 0) return;
 
             ActionManager.PlayNote(note, EnableVibrato, TransposeNotes);
+        }
+protected override void OnDeactivate(bool close) {
+            if (close) LanguageManager.LanguageChanged -= OnLanguageChanged;
+            base.OnDeactivate(close);
         }
 
         private void UpdateSlider(double value) {
