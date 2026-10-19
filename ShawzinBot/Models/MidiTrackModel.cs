@@ -30,7 +30,7 @@ namespace ShawzinBot.Models {
             get => _isChecked;
             set {
                 _isChecked = value;
-                MainViewModel.reloadPlayback = true;
+                MainViewModel.ReloadPlayback = true;
             }
         }
     }
