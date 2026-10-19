@@ -41,7 +41,7 @@ namespace ShawzinBot.ViewModels {
 
             EnableVibrato = Settings.Default.EnableVibrato;
             TransposeNotes = Settings.Default.TransposeNotes;
-            PlayThroughSpeakers = Settings.Default.PlayThroughSpeakers;
+            HistoryMusicPath = Settings.Default.HistoryMusicPath;
             PlaybackCurrentTimeWatcher.Instance.PollingInterval = TimeSpan.FromSeconds(1);
         }
 
@@ -65,7 +65,7 @@ namespace ShawzinBot.ViewModels {
 
         private bool _enableVibrato = true;
         private bool _transposeNotes = true;
-        private bool _playThroughSpeakers;
+        private string _historyMusicPath = "";
         private bool _ignoreSliderChange;
 
         private readonly string[] ScaleArray = {
@@ -240,14 +240,14 @@ namespace ShawzinBot.ViewModels {
                 SetUpProperties("TransposeNotes", value);
             }
         }
-
-        public bool PlayThroughSpeakers {
-            get => _playThroughSpeakers;
+        public string HistoryMusicPath {
+            get => _historyMusicPath;
             set {
-                _playThroughSpeakers = false;
-                SetUpProperties("PlayThroughSpeakers", value);
+                _historyMusicPath = value;
+                NotifyOfPropertyChange(() => HistoryMusicPath);
             }
         }
+        
 
         public string Scale {
             get => _scale;
@@ -351,11 +351,6 @@ namespace ShawzinBot.ViewModels {
 
                 playback = midiFile.GetPlayback();
                 playback.Speed = SelectedMidiSpeed.Speed;
-                if (PlayThroughSpeakers) {
-                    device = OutputDevice.GetByName("Microsoft GS Wavetable Synth");
-                    playback.OutputDevice = device;
-                }
-
                 playback.MoveToTime(playTime);
                 playback.Finished += (s, e) => { ResetMidi(); };
 
@@ -387,7 +382,7 @@ namespace ShawzinBot.ViewModels {
         }
 
         private void PlayTimerElapsed(object sender, ElapsedEventArgs e) {
-            if (ActionManager.IsWindowFocused("Warframe") || PlayThroughSpeakers) {
+            if (ActionManager.IsWindowFocused("Warframe")) {
                 playback.Start();
                 playTimer.Dispose();
             }
@@ -449,7 +444,7 @@ namespace ShawzinBot.ViewModels {
                     if (note != null && note.Velocity <= 0) return;
 
                     //Check if the user has tabbed out of warframe, and stop playback to avoid Scale issues
-                    if (!(ActionManager.PlayNote(note, EnableVibrato, TransposeNotes) || PlayThroughSpeakers))
+                    if (!(ActionManager.PlayNote(note, EnableVibrato, TransposeNotes)))
                         PlayPause();
                     UpdateScale(ActionManager.activeScale);
                     return;

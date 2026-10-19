@@ -139,7 +139,8 @@
                         </materialDesign:PackIcon>
                     </Button>
 
-                    <Button x:Name="Clear" HorizontalAlignment="Right" VerticalAlignment="Center" Width="20" Height="20"
+                    <Button x:Name="Clear" HorizontalAlignment="Right" VerticalAlignment="Center" Width="20"
+                            Height="20"
                             Margin="30,0" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                             Background="{x:Null}" BorderBrush="{x:Null}">
                         <materialDesign:PackIcon Kind="Delete" Width="20" Height="20" HorizontalAlignment="Center"
@@ -226,8 +227,6 @@
                           Width="65" Height="30" Background="#FF444444"
                           SelectedItem="{Binding Path=SelectedMidiSpeed, Mode=TwoWay}"
                           DisplayMemberPath="SpeedName" />
-                <CheckBox x:Name="PlayThroughSpeakers" Content="Play MIDI through speakers" VerticalAlignment="Top"
-                          HorizontalAlignment="Left" Margin="10,85,0,0" ClickMode="Press" Visibility="Hidden" />
             </Grid>
         </Grid>
         <TextBlock Text="{Binding Path=VersionString}" Grid.Column="1" Grid.Row="3" />

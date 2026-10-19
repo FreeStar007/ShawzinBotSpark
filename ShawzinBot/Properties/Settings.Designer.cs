@@ -48,18 +48,6 @@ namespace ShawzinBot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool PlayThroughSpeakers {
-            get {
-                return ((bool)(this["PlayThroughSpeakers"]));
-            }
-            set {
-                this["PlayThroughSpeakers"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string HistoryMusicPath {
             get {
