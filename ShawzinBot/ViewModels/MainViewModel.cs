@@ -150,7 +150,7 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
-        private double MaximumTime {
+        public double MaximumTime {
             get => _maximumTime;
             set {
                 _maximumTime = value;
@@ -199,7 +199,7 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
-        private MidiSpeedModel SelectedMidiSpeed {
+        public MidiSpeedModel SelectedMidiSpeed {
             get => _selectedMidiSpeed;
             set {
                 _selectedMidiSpeed = value;
