@@ -1,0 +1,25 @@
+﻿<Window x:Class="ShawzinBot.Views.ThemedMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dialog"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+    <Border Background="{DynamicResource MaterialDesignPaper}" BorderThickness="1" CornerRadius="4" Padding="20"
+            MouseLeftButtonDown="OnDragMove">
+        <StackPanel MinWidth="240" MaxWidth="360">
+            <TextBlock x:Name="TitleText" FontWeight="Bold" FontSize="16" Margin="0,0,0,10" />
+            <TextBlock x:Name="MessageText" TextWrapping="Wrap" Margin="0,0,0,20" />
+            <Button x:Name="OkButton" HorizontalAlignment="Right"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Click="OnOk" />
+        </StackPanel>
+    </Border>
+</Window>

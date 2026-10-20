@@ -59,7 +59,7 @@ namespace ShawzinBot.ViewModels {
         private double _maximumTime = 1;
         private string _currentTime = "0:00";
         private string _totalTime = "0:00";
-       private string _playPauseIcon = "Play";
+        private string _playPauseIcon = "Play";
         private string _scale;
 
         private BindableCollection<MidiInputModel> _midiInputs = new BindableCollection<MidiInputModel>();
@@ -291,9 +291,10 @@ namespace ShawzinBot.ViewModels {
                     NotEnoughBytesPolicy = NotEnoughBytesPolicy.Ignore
                 });
             }
-            catch (Exception nebe) {
-                MessageBox.Show(string.Format(LanguageManager.GetString("ErrorMessageFormat"), nebe),
-                    LanguageManager.GetString("ErrorTitle"), MessageBoxButtons.OK);
+            catch (Exception e) {
+                ShawzinBot.Views.ThemedMessageBox.Show(
+                    string.Format(LanguageManager.GetString("ErrorMessageFormat"), e),
+                    LanguageManager.GetString("ErrorTitle"));
                 ClearMidi();
                 HistoryMusicPath = "";
                 return;
@@ -479,7 +480,8 @@ namespace ShawzinBot.ViewModels {
 
             ActionManager.PlayNote(note, EnableVibrato, TransposeNotes);
         }
-protected override void OnDeactivate(bool close) {
+
+        protected override void OnDeactivate(bool close) {
             if (close) LanguageManager.LanguageChanged -= OnLanguageChanged;
             base.OnDeactivate(close);
         }

@@ -21,4 +21,5 @@
     <sys:String x:Key="ScaleName8">五声大调</sys:String>
     <sys:String x:Key="ErrorTitle">错误</sys:String>
     <sys:String x:Key="ErrorMessageFormat">发生了一个错误：{0}</sys:String>
+    <sys:String x:Key="DialogOk">确定</sys:String>
 </ResourceDictionary>

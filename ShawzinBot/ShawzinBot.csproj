@@ -129,6 +129,9 @@
             <DependentUpon>MainView.xaml</DependentUpon>
         </Compile>
         <Compile Include="ActionManager.cs" />
+        <Compile Include="Views\ThemedMessageBox.xaml.cs">
+            <DependentUpon>ThemedMessageBox.xaml</DependentUpon>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Bootstrapper.cs" />
@@ -151,8 +154,15 @@
         <None Include="App.config" />
     </ItemGroup>
     <ItemGroup>
-        <Page Include="Languages\ja-JP.xaml" />
+        <Page Include="Languages\ja-JP.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <SubType>Designer</SubType>
+        </Page>
         <Page Include="Views\MainView.xaml">
+            <SubType>Designer</SubType>
+            <Generator>MSBuild:Compile</Generator>
+        </Page>
+        <Page Include="Views\ThemedMessageBox.xaml">
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
         </Page>

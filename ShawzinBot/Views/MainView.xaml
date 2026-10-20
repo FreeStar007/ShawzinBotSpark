@@ -26,7 +26,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
-
         <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
             <Button x:Name="OpenFile" HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Height="20"
                     Margin="10,5" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Background="{x:Null}"
@@ -41,10 +40,9 @@
                     </materialDesign:PackIcon.Foreground>
                 </materialDesign:PackIcon>
             </Button>
-
             <TextBlock Text="{DynamicResource WindowTitle}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            
-            <Button x:Name="ChangeLanguage" Click="OnChangeLanguage" HorizontalAlignment="Left" VerticalAlignment="Center"
+            <Button x:Name="ChangeLanguage" Click="OnChangeLanguage" HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
                     Width="20" Height="20" Margin="40,5"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Background="{x:Null}"
                     BorderBrush="{x:Null}">
@@ -65,7 +63,6 @@
                     </materialDesign:PackIcon.Foreground>
                 </materialDesign:PackIcon>
             </Button>
-            
             <Button x:Name="CloseProgram" Click="OnCloseProgram" HorizontalAlignment="Right" VerticalAlignment="Center"
                     Width="20" Height="20" Margin="10,5"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Background="{x:Null}"
@@ -95,7 +92,6 @@
                 </materialDesign:PackIcon>
             </Button>
         </Grid>
-
         <Grid Grid.Column="1" Grid.Row="2" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -108,7 +104,6 @@
                 <RowDefinition Height="120" />
                 <RowDefinition Height="130" />
             </Grid.RowDefinitions>
-
             <Grid Grid.Row="1" VerticalAlignment="Center">
                 <TextBlock x:Name="SongName" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 <Grid VerticalAlignment="Top" Margin="0,30,0,0">
@@ -126,7 +121,6 @@
                             </materialDesign:PackIcon.Foreground>
                         </materialDesign:PackIcon>
                     </Button>
-
                     <Button x:Name="PlayPause" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40"
                             Height="40" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                             BorderBrush="#FFFFFF00" Background="{x:Null}">
@@ -145,7 +139,6 @@
                             </materialDesign:PackIcon.Foreground>
                         </materialDesign:PackIcon>
                     </Button>
-
                     <Button x:Name="Clear" HorizontalAlignment="Right" VerticalAlignment="Center" Width="20"
                             Height="20"
                             Margin="30,0" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
@@ -179,7 +172,8 @@
                 <TextBlock x:Name="TotalTime" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="7,0" />
             </Grid>
             <Grid Grid.Row="3" VerticalAlignment="Center" Background="#44444444" Height="60">
-                <TextBlock Text="{DynamicResource MidiInputDevice}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5" />
+                <TextBlock Text="{DynamicResource MidiInputDevice}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                           Margin="10,5" />
 
                 <Button x:Name="RefreshDevices" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="30"
                         Height="30" Margin="50,8" Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
@@ -201,7 +195,8 @@
                           DisplayMemberPath="DeviceName" />
             </Grid>
             <Grid Grid.Row="4" VerticalAlignment="Center" Background="#44444444" Height="110">
-                <TextBlock Text="{DynamicResource MidiTracks}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5" />
+                <TextBlock Text="{DynamicResource MidiTracks}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                           Margin="10,5" />
                 <!--ComboBox x:Name="MidiTracks" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,8" Width="240" Height="30" Background="#FF444444" SelectionChanged="MidiTracksSelectionChanged">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -222,14 +217,18 @@
                 </ScrollViewer>
             </Grid>
             <Grid Grid.Row="5" VerticalAlignment="Center" Background="#44444444" Height="120">
-                <TextBlock Text="{DynamicResource SettingsTitle}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,5" />
+                <TextBlock Text="{DynamicResource SettingsTitle}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                           Margin="10,5" />
                 <TextBlock x:Name="Scale" VerticalAlignment="Top" HorizontalAlignment="Left"
                            Margin="10,25" />
-                <CheckBox x:Name="EnableVibrato" Content="{DynamicResource Vibrato}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                <CheckBox x:Name="EnableVibrato" Content="{DynamicResource Vibrato}" VerticalAlignment="Top"
+                          HorizontalAlignment="Left"
                           Margin="10,45,0,0" ClickMode="Press" />
-                <CheckBox x:Name="TransposeNotes" Content="{DynamicResource Transpose}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                <CheckBox x:Name="TransposeNotes" Content="{DynamicResource Transpose}" VerticalAlignment="Top"
+                          HorizontalAlignment="Left"
                           Margin="10,65,0,0" ClickMode="Press" />
-                <TextBlock Text="{DynamicResource PlaySpeed}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,91,0,0" />
+                <TextBlock Text="{DynamicResource PlaySpeed}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                           Margin="10,91,0,0" />
                 <ComboBox x:Name="MidiSpeeds" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="75,85,0,0"
                           Width="65" Height="30" Background="#FF444444"
                           SelectedItem="{Binding Path=SelectedMidiSpeed, Mode=TwoWay}"
