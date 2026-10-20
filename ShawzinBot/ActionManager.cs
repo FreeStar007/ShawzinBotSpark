@@ -3,23 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Shapes;
 using Melanchall.DryWetMidi.Core;
 using Keyboard = InputManager.Keyboard;
 using Timer = System.Threading.Timer;
 
 namespace ShawzinBot {
     public class ActionManager {
-        public const uint WM_KEYDOWN = 0x0100;
-        public const uint WM_KEYUP = 0x0101;
-        public const uint WM_SETTEXT = 0x000C;
-
-        private static IntPtr warframeWindow = IntPtr.Zero;
+        private static IntPtr _warframeWindow = IntPtr.Zero;
 
         // Dictionary of note IDs and a series of ints. In order: Scale, Fret, Key, Vibrato
-        private static readonly Dictionary<int, int[]> shawzinNotes = new Dictionary<int, int[]> {
+        private static readonly Dictionary<int, int[]> ShawzinNotes = new Dictionary<int, int[]> {
             { 48, new[] { 0, 0, 1, 0 } }, // C3
             { 49, new[] { 0, 0, 2, 0 } }, // C#3
             { 50, new[] { 0, 0, 3, 0 } }, // D3
@@ -50,33 +44,30 @@ namespace ShawzinBot {
             { 75, new[] { 7, 3, 3, 0 } } // D#5
         };
 
-        private static readonly Dictionary<int, Keys> shawzinFrets = new Dictionary<int, Keys> {
+        private static readonly Dictionary<int, Keys> ShawzinFrets = new Dictionary<int, Keys> {
             { 0, Keys.None }, // No Fret
             { 1, Keys.Left }, // Sky Fret
             { 2, Keys.Down }, // Earth Fret
             { 3, Keys.Right } // Water Fret
         };
 
-        private static readonly Dictionary<int, Keys> shawzinStrings = new Dictionary<int, Keys> {
+        private static readonly Dictionary<int, Keys> ShawzinStrings = new Dictionary<int, Keys> {
             { 1, Keys.D1 }, // 1st String
             { 2, Keys.D2 }, // 2nd String
             { 3, Keys.D3 } // 3rd String
         };
 
-
-        private static readonly Dictionary<int, Keys> shawzinSpecial = new Dictionary<int, Keys> {
+        private static readonly Dictionary<int, Keys> ShawzinSpecial = new Dictionary<int, Keys> {
             { 0, Keys.Space }, // Vibrato
             { 1, Keys.Tab } // Scale change
         };
 
-        private static readonly int scaleSize = 9;
+        private static readonly int ScaleSize = 9;
 
-        public static int activeScale;
+        public static int ActiveScale;
 
-        private static bool vibratoActive = false;
-
-        private static Keys fretKey;
-        private static Keys vibratoKey;
+        private static Keys _fretKey;
+        private static Keys _vibratoKey;
 
         [DllImport("user32.dll")]
         public static extern IntPtr FindWindow(string className, string windowTitle);
@@ -85,29 +76,8 @@ namespace ShawzinBot {
             return FindWindow(null, lpWindowName);
         }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool ShowWindow(IntPtr hWnd, ShowWindowEnum flags);
-
-        [DllImport("user32.dll")]
-        private static extern int SetForegroundWindow(IntPtr hwnd);
-
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         private static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetWindowPlacement(IntPtr hWnd, ref WindowPlacement lpwndpl);
-
-        [DllImport("user32.dll")]
-        private static extern bool PostMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass,
-            string lpszWindows);
-
-        [DllImport("user32.dll")]
-        private static extern int SendMessage(IntPtr hWnd, uint Msg, char wParam, uint lParam);
 
         [DllImport("user32.dll")]
         private static extern void SwitchToThisWindow(IntPtr hWnd, bool fUnknown);
@@ -119,16 +89,14 @@ namespace ShawzinBot {
         /// <param name="enableVibrato"> Should we use vibrato to play unplayable notes?.</param>
         /// <param name="transposeNotes"> Should we transpose unplayable notes?.</param>
         public static bool PlayNote(NoteOnEvent note, bool enableVibrato, bool transposeNotes) {
-            //var hWnd = GetForegroundWindow();
-            //if (warframeWindow.Equals(IntPtr.Zero) || !hWnd.Equals(warframeWindow)) return false;
             if (!IsWindowFocused("Warframe")) return false;
 
             var noteId = (int)note.NoteNumber;
-            if (!shawzinNotes.ContainsKey(noteId)) {
+            if (!ShawzinNotes.ContainsKey(noteId)) {
                 if (transposeNotes) {
-                    if (noteId < shawzinNotes.Keys.First())
-                        noteId = shawzinNotes.Keys.First() + noteId % 12;
-                    else if (noteId > shawzinNotes.Keys.Last()) noteId = shawzinNotes.Keys.Last() - 15 + noteId % 12;
+                    if (noteId < ShawzinNotes.Keys.First())
+                        noteId = ShawzinNotes.Keys.First() + noteId % 12;
+                    else if (noteId > ShawzinNotes.Keys.Last()) noteId = ShawzinNotes.Keys.Last() - 15 + noteId % 12;
                 }
                 else {
                     return false;
@@ -146,36 +114,35 @@ namespace ShawzinBot {
         /// <param name="enableVibrato"> Should we use vibrato to play unplayable notes?.</param>
         /// <param name="transposeNotes"> Should we transpose unplayable notes?.</param>
         public static void PlayNote(int noteId, bool enableVibrato, bool transposeNotes) {
-            var shawzinNote = shawzinNotes[noteId];
+            var shawzinNote = ShawzinNotes[noteId];
             SetScale(shawzinNote[0]);
-            var stringKey = shawzinStrings[shawzinNote[2]];
+            var stringKey = ShawzinStrings[shawzinNote[2]];
 
+            Keyboard.KeyUp(_fretKey);
+            _fretKey = ShawzinFrets[shawzinNote[1]];
 
-            Keyboard.KeyUp(fretKey);
-            fretKey = shawzinFrets[shawzinNote[1]];
-
-            Keyboard.KeyUp(vibratoKey);
-            vibratoKey = shawzinSpecial[0];
+            Keyboard.KeyUp(_vibratoKey);
+            _vibratoKey = ShawzinSpecial[0];
 
             if (shawzinNote[3] == 1 && enableVibrato) {
-                KeyHold(vibratoKey, TimeSpan.FromMilliseconds(100));
-                Keyboard.KeyDown(vibratoKey);
+                KeyHold(_vibratoKey, TimeSpan.FromMilliseconds(100));
+                Keyboard.KeyDown(_vibratoKey);
             }
 
-            Keyboard.KeyDown(fretKey);
+            Keyboard.KeyDown(_fretKey);
             KeyTap(stringKey);
         }
 
         public static void SetScale(int scaleIndex) {
             var scaleDifference = 0;
 
-            if (scaleIndex < activeScale)
-                scaleDifference = scaleSize - (activeScale - scaleIndex);
-            else if (scaleIndex > activeScale) scaleDifference = scaleIndex - activeScale;
+            if (scaleIndex < ActiveScale)
+                scaleDifference = ScaleSize - (ActiveScale - scaleIndex);
+            else if (scaleIndex > ActiveScale) scaleDifference = scaleIndex - ActiveScale;
 
-            for (var i = 0; i < scaleDifference; i++) KeyTap(shawzinSpecial[1]);
+            for (var i = 0; i < scaleDifference; i++) KeyTap(ShawzinSpecial[1]);
 
-            activeScale = scaleIndex;
+            ActiveScale = scaleIndex;
         }
 
         /// <summary>
@@ -188,7 +155,7 @@ namespace ShawzinBot {
         }
 
         /// <summary>
-        ///     Hold key for certain amount of time and release. (UNTESTED)
+        ///     Hold key for certain amount of time and release.
         /// </summary>
         /// <param name="key"> The key to be held.</param>
         /// <param name="time"> The amount of time the key should be held for.</param>
@@ -197,81 +164,21 @@ namespace ShawzinBot {
             new Timer(state => Keyboard.KeyUp(key), null, time, Timeout.InfiniteTimeSpan);
         }
 
-        /// <summary>
-        ///     Bring a window to the front and activate it.
-        /// </summary>
-        /// <param name="windowName"> The name of the window we're looking for.</param>
-        //      public static void BringWindowToFront(string windowName)
-        //      {
-        //          IntPtr wdwIntPtr = FindWindow(windowName, null);
-        //	BringWindowToFront(wdwIntPtr);
-        //      }
-
-        //      /// <summary>
-        //      /// Bring a window to the front and activate it.
-        //      /// </summary>
-        //      /// <param name="wdwIntPtr"> The pointer to the window we're looking for.</param>
-        //public static void BringWindowToFront(IntPtr wdwIntPtr)
-        //{
-        //	//get the hWnd of the process
-        //	WindowPlacement placement = new WindowPlacement();
-        //	GetWindowPlacement(wdwIntPtr, ref placement);
-
-        //	// Check if window is minimized
-        //	if (placement.showCmd == 2)
-        //	{
-        //		//the window is hidden so we restore it
-        //		ShowWindow(wdwIntPtr, ShowWindowEnum.Restore);
-        //	}
-
-        //	//set user's focus to the window
-        //	int focusResult = SetForegroundWindow(wdwIntPtr);
-        //	Console.WriteLine(focusResult);
-        //}
         public static bool OnSongPlay() {
-            warframeWindow = FindWindow("Warframe");
-            //BringWindowToFront(warframeWindow);
-            SwitchToThisWindow(warframeWindow, true);
+            _warframeWindow = FindWindow("Warframe");
+            SwitchToThisWindow(_warframeWindow, true);
             var hWnd = GetForegroundWindow();
-            if (warframeWindow.Equals(IntPtr.Zero) || !hWnd.Equals(warframeWindow)) return false;
-            return true;
+            return !_warframeWindow.Equals(IntPtr.Zero) && hWnd.Equals(_warframeWindow);
         }
 
         public static bool IsWindowFocused(IntPtr windowPtr) {
             var hWnd = GetForegroundWindow();
-            if (windowPtr.Equals(IntPtr.Zero) || !hWnd.Equals(windowPtr)) return false;
-            return true;
+            return !windowPtr.Equals(IntPtr.Zero) && hWnd.Equals(windowPtr);
         }
 
         public static bool IsWindowFocused(string windowName) {
             var windowPtr = FindWindow(windowName);
             return IsWindowFocused(windowPtr);
-        }
-
-        private enum ShowWindowEnum {
-            Hide = 0,
-            ShowNormal = 1,
-            ShowMinimized = 2,
-            ShowMaximized = 3,
-            Maximize = 3,
-            ShowNormalNoActivate = 4,
-            Show = 5,
-            Minimize = 6,
-            ShowMinNoActivate = 7,
-            ShowNoActivate = 8,
-            Restore = 9,
-            ShowDefault = 10,
-            ForceMinimized = 11
-        }
-
-        private struct WindowPlacement {
-            public int length;
-            public int flags;
-            public int showCmd;
-            public Point ptMinPosition;
-            public Point ptMaxPosition;
-            public Rectangle rcNormalPosition;
-            public Rectangle rcDevice;
         }
     }
 }

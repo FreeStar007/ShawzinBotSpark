@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Timers;
-using System.Windows.Forms;
 using Caliburn.Micro;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Devices;
 using Melanchall.DryWetMidi.Interaction;
+using ShawzinBot.Languages;
 using ShawzinBot.Models;
 using ShawzinBot.Properties;
+using ShawzinBot.Views;
 using InputDevice = Melanchall.DryWetMidi.Devices.InputDevice;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Screen = Caliburn.Micro.Screen;
@@ -29,12 +30,11 @@ namespace ShawzinBot.ViewModels {
 
             MidiInputs.Add(new MidiInputModel(LanguageManager.GetString("DeviceNone"), true));
 
-            foreach (InputDevice device in InputDevice.GetAll()) MidiInputs.Add(new MidiInputModel(device.Name));
+            foreach (var device in InputDevice.GetAll()) MidiInputs.Add(new MidiInputModel(device.Name));
 
             SelectedMidiInput = MidiInputs[0];
-            foreach (string speed in new[] { "0.25", "0.5", "0.75", "1", "1.25", "1.5", "1.75", "2" }) {
+            foreach (var speed in new[] { "0.25", "0.5", "0.75", "1", "1.25", "1.5", "1.75", "2" })
                 MidiSpeeds.Add(new MidiSpeedModel(speed, double.Parse(speed)));
-            }
 
             SelectedMidiSpeed = MidiSpeeds[3];
 
@@ -47,7 +47,7 @@ namespace ShawzinBot.ViewModels {
 
         private void OnLanguageChanged(object sender, EventArgs e) {
             RefreshDevices();
-            UpdateScale(ActionManager.activeScale);
+            UpdateScale(ActionManager.ActiveScale);
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace ShawzinBot.ViewModels {
         private string _historyMusicPath = "";
         private bool _ignoreSliderChange;
 
-        private static readonly string[] _scaleNameKeys = {
+        private static readonly string[] ScaleNameKeys = {
             "ScaleName0",
             "ScaleName1",
             "ScaleName2",
@@ -99,7 +99,6 @@ namespace ShawzinBot.ViewModels {
         #region Public Variables
 
         private MidiFile _midiFile;
-        private TempoMap _tempoMap;
         private Playback _playback;
         private InputDevice _inputDevice;
 
@@ -292,7 +291,7 @@ namespace ShawzinBot.ViewModels {
                 });
             }
             catch (Exception e) {
-                ShawzinBot.Views.ThemedMessageBox.Show(
+                ThemedMessageBox.Show(
                     string.Format(LanguageManager.GetString("ErrorMessageFormat"), e),
                     LanguageManager.GetString("ErrorTitle"));
                 ClearMidi();
@@ -301,7 +300,6 @@ namespace ShawzinBot.ViewModels {
             }
 
             SongName = Path.GetFileNameWithoutExtension(filePath);
-            _tempoMap = _midiFile.GetTempoMap();
             TimeSpan midiFileDuration = _midiFile.GetDuration<MetricTimeSpan>();
             TotalTime = midiFileDuration.ToString("m\\:ss");
             MaximumTime = midiFileDuration.TotalSeconds;
@@ -433,9 +431,9 @@ namespace ShawzinBot.ViewModels {
         }
 
         private void UpdateScale(int scaleIndex) {
-            if (scaleIndex < 0 || scaleIndex >= _scaleNameKeys.Length) return;
+            if (scaleIndex < 0 || scaleIndex >= ScaleNameKeys.Length) return;
             var format = LanguageManager.GetString("ScaleFormat");
-            var name = LanguageManager.GetString(_scaleNameKeys[scaleIndex]);
+            var name = LanguageManager.GetString(ScaleNameKeys[scaleIndex]);
             Scale = string.Format(format, name);
         }
 
@@ -454,10 +452,6 @@ namespace ShawzinBot.ViewModels {
 
         private void OnNoteEvent(object sender, MidiEventPlayedEventArgs e) {
             switch (e.Event.EventType) {
-                case MidiEventType.SetTempo:
-                    var tempo = e.Event as SetTempoEvent;
-                    //playback.Speed = tempo.MicrosecondsPerQuarterNote;
-                    return;
                 case MidiEventType.NoteOn:
                     var note = e.Event as NoteOnEvent;
                     if (note != null && note.Velocity <= 0) return;
@@ -465,7 +459,7 @@ namespace ShawzinBot.ViewModels {
                     //Check if the user has tabbed out of warframe, and stop playback to avoid Scale issues
                     if (!ActionManager.PlayNote(note, EnableVibrato, TransposeNotes))
                         PlayPause();
-                    UpdateScale(ActionManager.activeScale);
+                    UpdateScale(ActionManager.ActiveScale);
                     return;
                 default:
                     return;

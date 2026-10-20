@@ -120,21 +120,21 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="Languages\LanguageManager.cs" />
-        <Compile Include="Models\MidiSpeedModel.cs" />
-        <Compile Include="Models\MidiTrackModel.cs" />
-        <Compile Include="Models\MidiInputModel.cs" />
-        <Compile Include="ViewModels\MainViewModel.cs" />
+        <Compile Include="Languages\LanguageManager.cs"/>
+        <Compile Include="Models\MidiSpeedModel.cs"/>
+        <Compile Include="Models\MidiTrackModel.cs"/>
+        <Compile Include="Models\MidiInputModel.cs"/>
+        <Compile Include="ViewModels\MainViewModel.cs"/>
         <Compile Include="Views\MainView.xaml.cs">
             <DependentUpon>MainView.xaml</DependentUpon>
         </Compile>
-        <Compile Include="ActionManager.cs" />
+        <Compile Include="ActionManager.cs"/>
         <Compile Include="Views\ThemedMessageBox.xaml.cs">
             <DependentUpon>ThemedMessageBox.xaml</DependentUpon>
         </Compile>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Bootstrapper.cs" />
+        <Compile Include="Bootstrapper.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs">
             <SubType>Code</SubType>
         </Compile>
@@ -143,15 +143,15 @@
             <DependentUpon>Settings.settings</DependentUpon>
             <DesignTimeSharedInput>True</DesignTimeSharedInput>
         </Compile>
-        <None Include="app.manifest" />
-        <None Include="packages.config" />
+        <None Include="app.manifest"/>
+        <None Include="packages.config"/>
         <None Include="Properties\Settings.settings">
             <Generator>SettingsSingleFileGenerator</Generator>
             <LastGenOutput>Settings.Designer.cs</LastGenOutput>
         </None>
     </ItemGroup>
     <ItemGroup>
-        <None Include="App.config" />
+        <None Include="App.config"/>
     </ItemGroup>
     <ItemGroup>
         <Page Include="Languages\ja-JP.xaml">
@@ -168,7 +168,7 @@
         </Page>
     </ItemGroup>
     <ItemGroup>
-        <Resource Include="Shawzin.ico" />
+        <Resource Include="Shawzin.ico"/>
     </ItemGroup>
     <ItemGroup>
         <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -183,14 +183,14 @@
         </BootstrapperPackage>
     </ItemGroup>
     <ItemGroup>
-      <Page Include="Languages\zh-CN.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Include="Languages\en-US.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <SubType>Designer</SubType>
-      </Page>
+        <Page Include="Languages\zh-CN.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Include="Languages\en-US.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <SubType>Designer</SubType>
+        </Page>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,8 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using ShawzinBot.Languages;
 
 namespace ShawzinBot.Views {
-    public partial class ThemedMessageBox : Window {
+    public partial class ThemedMessageBox {
         public ThemedMessageBox(string message, string title) {
             InitializeComponent();
             TitleText.Text = title;

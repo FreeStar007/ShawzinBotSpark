@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Windows;
+using ShawzinBot.Properties;
 
-namespace ShawzinBot {
+namespace ShawzinBot.Languages {
     public static class LanguageManager {
         private static readonly Uri[] DictUris = {
             new Uri("Languages/zh-CN.xaml", UriKind.Relative),
             new Uri("Languages/en-US.xaml", UriKind.Relative),
             new Uri("Languages/ja-JP.xaml", UriKind.Relative)
         };
+
+        private static ResourceDictionary _currentDict;
 
         public static event EventHandler LanguageChanged;
 
@@ -26,24 +29,20 @@ namespace ShawzinBot {
             }
 
             var merged = Application.Current.Resources.MergedDictionaries;
-            if (merged.Count > 0 && ReferenceEquals(merged[merged.Count - 1], _currentDict)) {
+            if (merged.Count > 0 && ReferenceEquals(merged[merged.Count - 1], _currentDict))
                 merged[merged.Count - 1] = dict;
-            }
-            else {
+            else
                 merged.Add(dict);
-            }
 
             _currentDict = dict;
-            Properties.Settings.Default.LanguageIndex = languageIndex;
-            Properties.Settings.Default.Save();
+            Settings.Default.LanguageIndex = languageIndex;
+            Settings.Default.Save();
 
             LanguageChanged?.Invoke(null, EventArgs.Empty);
         }
 
-        private static ResourceDictionary _currentDict;
-
         public static void ApplySavedOrDefault() {
-            Apply(Properties.Settings.Default.LanguageIndex);
+            Apply(Settings.Default.LanguageIndex);
         }
 
         public static string GetString(string key) {

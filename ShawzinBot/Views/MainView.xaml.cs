@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using Melanchall.DryWetMidi.Devices;
+using ShawzinBot.Languages;
 
 namespace ShawzinBot.Views {
     /// <summary>
@@ -36,12 +37,12 @@ namespace ShawzinBot.Views {
         private void OnSelectJapanese(object sender, RoutedEventArgs e) {
             LanguageManager.Apply(2);
         }
-            
+
         private void OnCloseProgram(object sender, RoutedEventArgs e) {
             PlaybackCurrentTimeWatcher.Instance.Dispose();
             Close();
         }
-        
+
 
         private void OnMinimizeProgram(object sender, RoutedEventArgs e) {
             WindowState = WindowState.Minimized;

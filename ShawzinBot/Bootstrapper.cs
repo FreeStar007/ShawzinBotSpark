@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Caliburn.Micro;
+using ShawzinBot.Languages;
 using ShawzinBot.ViewModels;
 
 namespace ShawzinBot {
