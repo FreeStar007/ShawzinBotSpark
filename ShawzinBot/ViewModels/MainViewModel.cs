@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -396,7 +396,7 @@ namespace ShawzinBot.ViewModels {
         }
 
         private void PlayTimerElapsed(object sender, ElapsedEventArgs e) {
-            if (ActionManager.IsWindowFocused("Warframe")) {
+            if (ActionManager.WindowNames.Any(ActionManager.IsWindowFocused)) {
                 _playback.Start();
                 _playTimer.Dispose();
             }

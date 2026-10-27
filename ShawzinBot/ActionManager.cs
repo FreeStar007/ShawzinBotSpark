@@ -10,6 +10,8 @@ using Timer = System.Threading.Timer;
 
 namespace ShawzinBot {
     public class ActionManager {
+        public static string[] WindowNames = { "Warframe", "星际战甲" };
+
         private static IntPtr _warframeWindow = IntPtr.Zero;
 
         // Dictionary of note IDs and a series of ints. In order: Scale, Fret, Key, Vibrato
@@ -89,8 +91,7 @@ namespace ShawzinBot {
         /// <param name="enableVibrato"> Should we use vibrato to play unplayable notes?.</param>
         /// <param name="transposeNotes"> Should we transpose unplayable notes?.</param>
         public static bool PlayNote(NoteOnEvent note, bool enableVibrato, bool transposeNotes) {
-            if (!IsWindowFocused("Warframe")) return false;
-
+            if (WindowNames.Select(x => IsWindowFocused(x)).All(x => !x)) return false;
             var noteId = (int)note.NoteNumber;
             if (!ShawzinNotes.ContainsKey(noteId)) {
                 if (transposeNotes) {
@@ -165,20 +166,18 @@ namespace ShawzinBot {
         }
 
         public static bool OnSongPlay() {
-            _warframeWindow = FindWindow("Warframe");
+            if (WindowNames.Select(x => FindWindow(x))
+                .All(x => (_warframeWindow = x).Equals(IntPtr.Zero))) return false;
             SwitchToThisWindow(_warframeWindow, true);
-            var hWnd = GetForegroundWindow();
-            return !_warframeWindow.Equals(IntPtr.Zero) && hWnd.Equals(_warframeWindow);
+            return IsWindowFocused(_warframeWindow);
         }
 
         public static bool IsWindowFocused(IntPtr windowPtr) {
-            var hWnd = GetForegroundWindow();
-            return !windowPtr.Equals(IntPtr.Zero) && hWnd.Equals(windowPtr);
+            return !windowPtr.Equals(IntPtr.Zero) && GetForegroundWindow().Equals(windowPtr);
         }
 
         public static bool IsWindowFocused(string windowName) {
-            var windowPtr = FindWindow(windowName);
-            return IsWindowFocused(windowPtr);
+            return IsWindowFocused(FindWindow(windowName));
         }
     }
 }
