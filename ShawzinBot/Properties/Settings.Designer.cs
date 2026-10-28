@@ -46,7 +46,6 @@ namespace ShawzinBot.Properties {
             }
         }
         
-        // ... existing code ...
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
