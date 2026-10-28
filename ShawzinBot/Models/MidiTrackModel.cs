@@ -8,18 +8,12 @@ namespace ShawzinBot.Models {
 
         public MidiTrackModel(TrackChunk track) {
             Track = track;
-            var trackName = track.Events.OfType<SequenceTrackNameEvent>().FirstOrDefault()?.Text;
-            TrackName = string.IsNullOrEmpty(trackName) || trackName.Replace(" ", "").Replace("?", "") == ""
-                ? "未知段落"
-                : trackName;
+            TrackName = track.Events.OfType<SequenceTrackNameEvent>().FirstOrDefault()?.Text;
         }
 
         public MidiTrackModel(TrackChunk track, bool isChecked) {
             Track = track;
-            var trackName = track.Events.OfType<SequenceTrackNameEvent>().FirstOrDefault()?.Text;
-            TrackName = string.IsNullOrEmpty(trackName) || trackName.Replace(" ", "") == ""
-                ? "未知段落"
-                : trackName;
+            TrackName = track.Events.OfType<SequenceTrackNameEvent>().FirstOrDefault()?.Text;
             IsChecked = isChecked;
         }
 
