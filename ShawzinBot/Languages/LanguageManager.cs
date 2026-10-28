@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using ShawzinBot.Properties;
 
@@ -11,6 +12,20 @@ namespace ShawzinBot.Languages {
         };
 
         private static ResourceDictionary _currentDict;
+
+        private static readonly Lazy<ResourceDictionary[]> AllDicts =
+            new Lazy<ResourceDictionary[]>(() => {
+                var result = new ResourceDictionary[DictUris.Length];
+                for (var i = 0; i < DictUris.Length; i++)
+                    try {
+                        result[i] = new ResourceDictionary { Source = DictUris[i] };
+                    }
+                    catch (Exception) {
+                        result[i] = null;
+                    }
+
+                return result;
+            });
 
         public static event EventHandler LanguageChanged;
 
@@ -47,6 +62,21 @@ namespace ShawzinBot.Languages {
 
         public static string GetString(string key) {
             return Application.Current?.TryFindResource(key) as string ?? key;
+        }
+
+        public static string[] GetStrings(string key) {
+            var values = new List<string>();
+            foreach (var dict in AllDicts.Value) {
+                var value = dict?[key] as string;
+                if (!string.IsNullOrEmpty(value) && !values.Contains(value)) values.Add(value);
+                for (var i = 0;; i++) {
+                    var suffixValue = dict?[key + i] as string;
+                    if (string.IsNullOrEmpty(suffixValue)) break;
+                    if (!values.Contains(suffixValue)) values.Add(suffixValue);
+                }
+            }
+
+            return values.ToArray();
         }
     }
 }

@@ -5,12 +5,13 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Melanchall.DryWetMidi.Core;
+using ShawzinBot.Languages;
 using Keyboard = InputManager.Keyboard;
 using Timer = System.Threading.Timer;
 
 namespace ShawzinBot {
     public class ActionManager {
-        public static string[] WindowNames = { "Warframe", "星际战甲" };
+        public static string[] WindowNames = LanguageManager.GetStrings("GameWindowTitle");
 
         private static IntPtr _warframeWindow = IntPtr.Zero;
 
