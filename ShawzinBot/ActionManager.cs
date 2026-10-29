@@ -10,12 +10,15 @@ using Keyboard = InputManager.Keyboard;
 using Timer = System.Threading.Timer;
 
 namespace ShawzinBot {
+    // 按键动作管理器：把MIDI音符换算成游戏内的 Shawzin 按键并发送
     public static class ActionManager {
+        // 需要操作的游戏窗口标题列表（从多语言资源获取，包含所有语言的标题）
         public static string[] WindowNames = LanguageManager.GetStrings("GameWindowTitle");
 
+        // 缓存的游戏窗口句柄
         private static IntPtr _warframeWindow = IntPtr.Zero;
 
-        // Dictionary of note IDs and a series of ints. In order: Scale, Fret, Key, Vibrato
+        // 音符ID与演奏按键的映射字典，数组依次为：音阶、品、弦、颤音标记
         private static readonly Dictionary<int, int[]> ShawzinNotes = new Dictionary<int, int[]> {
             { 48, new[] { 0, 0, 1, 0 } }, // C3
             { 49, new[] { 0, 0, 2, 0 } }, // C#3
@@ -47,34 +50,41 @@ namespace ShawzinBot {
             { 75, new[] { 7, 3, 3, 0 } } // D#5
         };
 
+        // 品位编号与方向键的映射
         private static readonly Dictionary<int, Keys> ShawzinFrets = new Dictionary<int, Keys> {
-            { 0, Keys.None }, // No Fret
-            { 1, Keys.Left }, // Sky Fret
-            { 2, Keys.Down }, // Earth Fret
-            { 3, Keys.Right } // Water Fret
+            { 0, Keys.None }, // 空品（不按品）
+            { 1, Keys.Left }, // 天品
+            { 2, Keys.Down }, // 地品
+            { 3, Keys.Right } // 水品
         };
 
+        // 弦号与数字键的映射
         private static readonly Dictionary<int, Keys> ShawzinStrings = new Dictionary<int, Keys> {
-            { 1, Keys.D1 }, // 1st String
-            { 2, Keys.D2 }, // 2nd String
-            { 3, Keys.D3 } // 3rd String
+            { 1, Keys.D1 }, // 第一弦
+            { 2, Keys.D2 }, // 第二弦
+            { 3, Keys.D3 } // 第三弦
         };
 
+        // 特殊按键映射：颤音键与音阶切换键
         private static readonly Dictionary<int, Keys> ShawzinSpecial = new Dictionary<int, Keys> {
-            { 0, Keys.Space }, // Vibrato
-            { 1, Keys.Tab } // Scale change
+            { 0, Keys.Space }, // 颤音
+            { 1, Keys.Tab } // 音阶切换
         };
 
+        // 音阶总数量（音阶循环一圈的格数）
         private static readonly int ScaleSize = 9;
 
+        // 当前生效的音阶编号
         public static int ActiveScale;
 
+        // 上一次按住的品位键与颤音键，便于换音时先松开
         private static Keys _fretKey;
         private static Keys _vibratoKey;
 
         [DllImport("user32.dll")]
         public static extern IntPtr FindWindow(string className, string windowTitle);
 
+        // 按窗口标题查找窗口句柄
         public static IntPtr FindWindow(string lpWindowName) {
             return FindWindow(null, lpWindowName);
         }
@@ -95,12 +105,12 @@ namespace ShawzinBot {
             if (WindowNames.Select(x => IsWindowFocused(x)).All(x => !x)) return false;
             var noteId = (int)note.NoteNumber;
             if (!ShawzinNotes.ContainsKey(noteId)) {
+                // 超出可演奏音域时，按移调策略把音符折回音域范围内
                 if (transposeNotes) {
                     if (noteId < ShawzinNotes.Keys.First())
                         noteId = ShawzinNotes.Keys.First() + noteId % 12;
                     else if (noteId > ShawzinNotes.Keys.Last()) noteId = ShawzinNotes.Keys.Last() - 15 + noteId % 12;
-                }
-                else {
+                } else {
                     return false;
                 }
             }
@@ -126,6 +136,7 @@ namespace ShawzinBot {
             Keyboard.KeyUp(_vibratoKey);
             _vibratoKey = ShawzinSpecial[0];
 
+            // 该音符需要颤音且用户开启了颤音时，先按住颤音键
             if (shawzinNote[3] == 1 && enableVibrato) {
                 KeyHold(_vibratoKey, TimeSpan.FromMilliseconds(100));
                 Keyboard.KeyDown(_vibratoKey);

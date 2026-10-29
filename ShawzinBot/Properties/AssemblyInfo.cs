@@ -3,9 +3,7 @@ using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-// La información general de un ensamblado se controla mediante el siguiente 
-// conjunto de atributos. Cambie estos valores de atributo para modificar la información
-// asociada con un ensamblado.
+// 程序集信息通过下面的特性集控制，修改这些特性即可变更程序集元数据
 [assembly: AssemblyTitle("ShawzinBot")]
 [assembly: AssemblyDescription("A program to convert MIDI inputs and files into Shawzin keys")]
 [assembly: AssemblyConfiguration("")]
@@ -15,41 +13,26 @@ using System.Windows;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Si establece ComVisible en false, los tipos de este ensamblado no estarán visibles 
-// para los componentes COM.  Si es necesario obtener acceso a un tipo en este ensamblado desde 
-// COM, establezca el atributo ComVisible en true en este tipo.
+// ComVisible 设为 false 时，本程序集中的类型对 COM 组件不可见；
+// 若需要从 COM 访问某类型，请在该类型上将 ComVisible 设为 true
 [assembly: ComVisible(false)]
 
-//Para comenzar a compilar aplicaciones que se puedan traducir, establezca
-//<UICulture>CultureYouAreCodingWith</UICulture> en el archivo .csproj
-//dentro de <PropertyGroup>.  Por ejemplo, si utiliza inglés de EE.UU.
-//en los archivos de código fuente, establezca <UICulture> en en-US.  A continuación, quite la marca de comentario
-//del atributo NeutralResourceLanguage.  Actualice "en-US" en
-//la siguiente línea para que coincida con el valor UICulture del archivo de proyecto.
+// 若要编译可本地化程序，需在项目文件的 PropertyGroup 中设置
+// <UICulture>要使用的语言</UICulture>，例如源码使用中文则设为 zh-CN，
+// 并取消下面 NeutralResourceLanguage 特性的注释，使其与项目设置一致
 
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
 
 
 [assembly: ThemeInfo(
-    ResourceDictionaryLocation.None, //donde se encuentran los diccionarios de recursos específicos del tema
-    //(se utiliza si no se encuentra ningún recurso en la página,
-    // ni diccionarios de recursos de la aplicación)
-    ResourceDictionaryLocation.SourceAssembly //donde se encuentra el diccionario de recursos genérico
-    //(se utiliza si no se encuentra ningún recurso en la página,
-    // aplicación o diccionarios de recursos específicos del tema)
+    ResourceDictionaryLocation.None, // 主题专用资源字典所在位置（页面与应用字典中都找不到资源时使用）
+    ResourceDictionaryLocation.SourceAssembly // 通用资源字典所在位置（页面、应用及主题字典中都找不到资源时使用）
 )]
 
 
-// La información de versión de un ensamblado consta de los cuatro valores siguientes:
-//
-//      Versión principal
-//      Versión secundaria
-//      Número de compilación
-//      Revisión
-//
-// Puede especificar todos los valores o usar los valores predeterminados de número de compilación y de revisión
-// utilizando el carácter "*", como se muestra a continuación:
-// [assembly: AssemblyVersion("1.0.*")]
+// 程序集版本由以下四段组成：
+// 主版本、次版本、内部版本号、修订号
+// 可用 "*" 让内部版本号与修订号自动填充，例如 [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("2.3.3.0")]
 [assembly: AssemblyFileVersion("2.3.3.0")]
 [assembly: NeutralResourcesLanguage("zh_cn")]

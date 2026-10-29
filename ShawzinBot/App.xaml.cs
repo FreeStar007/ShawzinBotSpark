@@ -1,9 +1,7 @@
 ﻿using System.Windows;
 
 namespace ShawzinBot {
-    /// <summary>
-    ///     Lógica de interacción para App.xaml
-    /// </summary>
+    // App.xaml 的逻辑交互部分
     public partial class App : Application {
     }
 }
