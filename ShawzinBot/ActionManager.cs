@@ -10,7 +10,7 @@ using Keyboard = InputManager.Keyboard;
 using Timer = System.Threading.Timer;
 
 namespace ShawzinBot {
-    public class ActionManager {
+    public static class ActionManager {
         public static string[] WindowNames = LanguageManager.GetStrings("GameWindowTitle");
 
         private static IntPtr _warframeWindow = IntPtr.Zero;

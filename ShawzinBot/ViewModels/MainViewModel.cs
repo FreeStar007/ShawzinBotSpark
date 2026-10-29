@@ -291,8 +291,7 @@ namespace ShawzinBot.ViewModels {
                 });
             }
             catch (Exception e) {
-                ThemedMessageBox.Show(
-                    string.Format(LanguageManager.GetString("ErrorMessageFormat"), e),
+                ThemedMessageBox.Show(string.Format(LanguageManager.GetString("ErrorMessageFormat"), e),
                     LanguageManager.GetString("ErrorTitle"));
                 ClearMidi();
                 HistoryMusicPath = "";
