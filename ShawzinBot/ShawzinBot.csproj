@@ -124,6 +124,7 @@
         <Compile Include="Models\MidiSpeedModel.cs"/>
         <Compile Include="Models\MidiTrackModel.cs"/>
         <Compile Include="Models\MidiInputModel.cs"/>
+        <Compile Include="Properties\PropertyManager.cs"/>
         <Compile Include="ViewModels\MainViewModel.cs"/>
         <Compile Include="Views\MainView.xaml.cs">
             <DependentUpon>MainView.xaml</DependentUpon>

@@ -18,10 +18,11 @@ using Screen = Caliburn.Micro.Screen;
 using Timer = System.Timers.Timer;
 
 namespace ShawzinBot.ViewModels {
-    // 主界面视图模型：负责MIDI文件的加载、轨道管理、播放控制以及按键输出调度
+    // 主界面视图模型：负责MIDI文件的加载、音轨管理、播放控制以及按键输出调度
     public class MainViewModel : Screen {
         #region Constructor
 
+        // 初始化视图模型，恢复用户设置与历史曲目，并构建设备、倍速、音阶等列表数据
         public MainViewModel() {
             // 从用户配置恢复上次的开关与历史曲目
             EnableVibrato = Settings.Default.EnableVibrato;
@@ -49,7 +50,8 @@ namespace ShawzinBot.ViewModels {
             PlaybackCurrentTimeWatcher.Instance.PollingInterval = TimeSpan.FromSeconds(1);
         }
 
-        // 语言切换后刷新设备名称与音阶显示（这两项文案来自多语言资源）
+        // 语言切换后刷新设备名称与音阶显示，这两项文案均来自多语言资源
+        // sender：语言管理器，本方法未使用；e：事件参数，本方法未使用
         private void OnLanguageChanged(object sender, EventArgs e) {
             RefreshDevices();
             UpdateScale(ActionManager.ActiveScale);
@@ -59,38 +61,55 @@ namespace ShawzinBot.ViewModels {
 
         #region Private Variables
 
-        // 歌曲名、进度条值、进度条最大值
+        // 歌曲名称的后备字段
         private string _songName;
+
+        // 进度条当前值的后备字段
         private double _songSlider;
 
+        // 进度条最大值的后备字段
         private double _maximumTime = 1;
 
-        // 当前时间与总时长的显示文本
+        // 当前播放时间显示文本的后备字段
         private string _currentTime = "0:00";
 
+        // 曲目总时长显示文本的后备字段
         private string _totalTime = "0:00";
 
-        // 播放/暂停按钮显示的图标名称
+        // 播放暂停按钮图标名称的后备字段
         private string _playPauseIcon = "Play";
 
-        // 当前音阶的显示文本
+        // 当前音阶显示文本的后备字段
         private string _scale;
 
+        // MIDI输入设备列表的后备字段
         private BindableCollection<MidiInputModel> _midiInputs = new BindableCollection<MidiInputModel>();
+
+        // MIDI音轨列表的后备字段
         private BindableCollection<MidiTrackModel> _midiTracks = new BindableCollection<MidiTrackModel>();
+
+        // 播放倍速列表的后备字段
         private BindableCollection<MidiSpeedModel> _midiSpeeds = new BindableCollection<MidiSpeedModel>();
+
+        // 当前选中MIDI输入设备的后备字段
         private MidiInputModel _selectedMidiInput;
+
+        // 当前选中播放倍速的后备字段
         private MidiSpeedModel _selectedMidiSpeed;
 
+        // 颤音开关的后备字段
         private bool _enableVibrato = true;
+
+        // 移调开关的后备字段
         private bool _transposeNotes = true;
 
+        // 历史曲目路径的后备字段
         private string _historyMusicPath = "";
 
-        // 为true时忽略进度条变更，避免程序回写进度条时触发跳转
+        // 为真时忽略进度条变更，避免程序回写进度条时触发跳转
         private bool _ignoreSliderChange;
 
-        // 九个音阶名称对应的多语言资源键
+        // 九个音阶名称对应的多语言资源键，索引即音阶编号
         private static readonly string[] ScaleNameKeys = {
             "ScaleName0",
             "ScaleName1",
@@ -103,9 +122,10 @@ namespace ShawzinBot.ViewModels {
             "ScaleName8"
         };
 
+        // 文件中解析出的全部音轨数据块
         private IEnumerable<TrackChunk> _midiTrackChunks;
 
-        // 首轨道（通常是速度/调号信息轨），播放时单独保留
+        // 首音轨，通常存放速度与调号等信息，播放时始终保留
         private TrackChunk _firstTrack;
 
         // 等待游戏窗口获得焦点的轮询定时器
@@ -114,25 +134,33 @@ namespace ShawzinBot.ViewModels {
         // 暂停时记录的播放位置，恢复播放时从该位置继续
         private ITimeSpan _playTime = new MidiTimeSpan();
 
-        // 程序版本号，取自程序集
+        // 程序版本号，取自当前程序集
         private readonly Version _programVersion = Assembly.GetExecutingAssembly().GetName().Version;
+
+        // 版本号显示文本的后备字段
         private string _versionString = "";
 
         #endregion
 
         #region Public Variables
 
+        // 当前加载的MIDI文件对象
         private MidiFile _midiFile;
+
+        // 当前MIDI文件对应的播放器
         private Playback _playback;
+
+        // 当前打开的MIDI输入设备
         private InputDevice _inputDevice;
 
-        // 轨道勾选状态变化后需要重建播放器的标记
+        // 音轨勾选变化后需要重建播放器的标记，供音轨模型跨对象置位
         public static bool ReloadPlayback;
 
         #endregion
 
         #region Properties
 
+        // 界面显示的版本号文本，赋值时自动添加v前缀
         public string VersionString {
             get => _versionString;
             set {
@@ -141,6 +169,7 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
+        // 当前曲目名称，取文件名不含扩展名
         public string SongName {
             get => _songName;
             set {
@@ -149,6 +178,7 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
+        // 当前播放时间显示文本，格式为分:秒
         public string CurrentTime {
             get => _currentTime;
             set {
@@ -157,6 +187,7 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
+        // 曲目总时长显示文本，格式为分:秒
         public string TotalTime {
             get => _totalTime;
             set {
@@ -165,6 +196,7 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
+        // 进度条当前值，单位为秒，用户拖动时同步跳转播放位置
         public double SongSlider {
             get => _songSlider;
             set {
@@ -187,6 +219,7 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
+        // 进度条最大值，即曲目总秒数
         public double MaximumTime {
             get => _maximumTime;
             set {
@@ -195,6 +228,7 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
+        // 播放暂停按钮显示的图标名称
         public string PlayPauseIcon {
             get => _playPauseIcon;
             set {
@@ -203,14 +237,11 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
-        public BindableCollection<MidiInputModel> MidiInputs {
-            get => _midiInputs;
-            set {
-                _midiInputs = value;
-                NotifyOfPropertyChange(() => MidiInputs);
-            }
-        }
+        // MIDI输入设备列表，首项固定为无设备，内容变化由集合自身通知界面
+        public BindableCollection<MidiInputModel> MidiInputs { get; } =
+            new BindableCollection<MidiInputModel>();
 
+        // 当前选中的MIDI输入设备，切换时重新打开设备监听
         public MidiInputModel SelectedMidiInput {
             get => _selectedMidiInput;
             set {
@@ -229,14 +260,11 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
-        public BindableCollection<MidiSpeedModel> MidiSpeeds {
-            get => _midiSpeeds;
-            set {
-                _midiSpeeds = value;
-                NotifyOfPropertyChange(() => MidiSpeeds);
-            }
-        }
+        // 播放倍速候选列表，内容变化由集合自身通知界面
+        public BindableCollection<MidiSpeedModel> MidiSpeeds { get; } =
+            new BindableCollection<MidiSpeedModel>();
 
+        // 当前选中的播放倍速，切换时同步到播放器
         public MidiSpeedModel SelectedMidiSpeed {
             get => _selectedMidiSpeed;
             set {
@@ -248,31 +276,31 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
-        public BindableCollection<MidiTrackModel> MidiTracks {
-            get => _midiTracks;
-            set {
-                _midiTracks = value;
-                NotifyOfPropertyChange(() => MidiTracks);
-            }
-        }
+        // MIDI音轨列表，界面据此渲染勾选框，内容变化由集合自身通知界面
+        public BindableCollection<MidiTrackModel> MidiTracks { get; } =
+            new BindableCollection<MidiTrackModel>();
 
+        // 是否启用颤音，变更时写入用户设置
         public bool EnableVibrato {
             get => _enableVibrato;
             set {
                 _enableVibrato = value;
-                SetUpProperties("EnableVibrato", value);
+                PropertyManager.SetUpProperties("EnableVibrato", value);
+                NotifyOfPropertyChange(() => EnableVibrato);
             }
         }
 
+        // 是否启用移调，变更时写入用户设置
         public bool TransposeNotes {
             get => _transposeNotes;
             set {
                 _transposeNotes = value;
-                SetUpProperties("TransposeNotes", value);
+                PropertyManager.SetUpProperties("TransposeNotes", value);
+                NotifyOfPropertyChange(() => TransposeNotes);
             }
         }
 
-
+        // 当前音阶的界面显示文本
         public string Scale {
             get => _scale;
             set {
@@ -281,11 +309,12 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
+        // 上次加载的曲目路径，变更时写入用户设置，私有属性不参与绑定故无需通知
         private string HistoryMusicPath {
             get => _historyMusicPath;
             set {
                 _historyMusicPath = value;
-                SetUpProperties("HistoryMusicPath", value);
+                PropertyManager.SetUpProperties("HistoryMusicPath", value);
             }
         }
 
@@ -293,21 +322,8 @@ namespace ShawzinBot.ViewModels {
 
         #region Methods
 
-        // 把字符串型配置写入用户设置并持久化
-        private void SetUpProperties(string property, string target) {
-            Settings.Default[property] = target;
-            Settings.Default.Save();
-            NotifyOfPropertyChange(() => property);
-        }
-
-        // 把布尔型配置写入用户设置并持久化
-        private void SetUpProperties(string property, bool target) {
-            Settings.Default[property] = target;
-            Settings.Default.Save();
-            NotifyOfPropertyChange(() => property);
-        }
-
-        // 读取MIDI文件并初始化歌曲信息、轨道列表与进度条
+        // 读取MIDI文件并初始化歌曲信息、音轨列表与进度条，读取失败时弹窗提示并清空历史路径
+        // filePath：MIDI文件的完整路径
         private void SetUpMidi(string filePath) {
             ClearMidi();
             try {
@@ -336,7 +352,7 @@ namespace ShawzinBot.ViewModels {
             UpdateSlider(0);
             CurrentTime = "0:00";
             _midiTrackChunks = _midiFile.GetTrackChunks();
-            // 多轨道时首轨作为信息轨固定播放，其余轨道全部列出供勾选
+            // 多音轨时首轨作为信息轨固定播放，其余音轨全部列出供勾选
             if (_midiTrackChunks.Count() > 1) {
                 _firstTrack = _midiTrackChunks.FirstOrDefault();
                 _midiFile.Chunks.Remove(_firstTrack);
@@ -349,7 +365,7 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
-        // 弹出文件选择框打开MIDI文件，仅允许 .mid/.midi 格式
+        // 弹出文件选择框加载MIDI文件，仅允许mid与midi扩展名
         public void OpenFile() {
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "MIDI file|*.mid;*.midi;";
@@ -377,7 +393,7 @@ namespace ShawzinBot.ViewModels {
             MaximumTime = 1;
         }
 
-        // 播放/暂停切换：首次播放时按勾选的轨道重建播放器，并开始向游戏输出按键
+        // 播放暂停切换，首次播放时按勾选的音轨重建播放器并开始输出按键
         public void PlayPause() {
             if (_midiFile == null || MaximumTime == 0d) return;
             if (_playback == null || ReloadPlayback) {
@@ -392,7 +408,7 @@ namespace ShawzinBot.ViewModels {
                 _midiFile.Chunks.Clear();
                 _midiFile.Chunks.Add(_firstTrack);
 
-                // 只把勾选中的轨道加入播放集合
+                // 只把勾选中的音轨加入播放集合
                 foreach (var trackModel in MidiTracks)
                     if (trackModel.IsChecked)
                         _midiFile.Chunks.Add(trackModel.Track);
@@ -430,6 +446,7 @@ namespace ShawzinBot.ViewModels {
         }
 
         // 轮询游戏窗口焦点，一旦获得焦点就真正开始播放
+        // sender：定时器实例，本方法未使用；e：经过时间事件参数，本方法未使用
         private void PlayTimerElapsed(object sender, ElapsedEventArgs e) {
             if (ActionManager.WindowNames.Any(ActionManager.IsWindowFocused)) {
                 _playback.Start();
@@ -448,18 +465,18 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
-        // 重新播放按钮命令
+        // 重新播放按钮的命令
         public void Restart() {
             ResetMidi();
         }
 
-        // 清除按钮命令：卸载曲目并清空历史路径
+        // 清除按钮的命令，卸载曲目并清空历史路径
         public void Clear() {
             ClearMidi();
             HistoryMusicPath = "";
         }
 
-        // 重新枚举MIDI输入设备，并把选中项复位为“无设备”
+        // 重新枚举MIDI输入设备，并把选中项复位为无设备
         public void RefreshDevices() {
             MidiInputs.Clear();
             MidiInputs.Add(new MidiInputModel(LanguageManager.GetString("DeviceNone"), true));
@@ -470,6 +487,7 @@ namespace ShawzinBot.ViewModels {
         }
 
         // 按音阶编号刷新界面显示的音阶名称
+        // scaleIndex：音阶编号，超出可用范围时不做任何更新
         private void UpdateScale(int scaleIndex) {
             if (scaleIndex < 0 || scaleIndex >= ScaleNameKeys.Length) return;
             var format = LanguageManager.GetString("ScaleFormat");
@@ -481,7 +499,8 @@ namespace ShawzinBot.ViewModels {
 
         #region EventHandlers
 
-        // 播放进度定时器回调：同步进度条与当前时间显示
+        // 播放进度回调，同步进度条与当前时间显示
+        // sender：播放时间监听器，本方法未使用；e：各播放器的当前时间集合
         private void OnTick(object sender, PlaybackCurrentTimeChangedEventArgs e) {
             foreach (var playbackTime in e.Times) {
                 TimeSpan time = (MetricTimeSpan)playbackTime.Time;
@@ -491,7 +510,8 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
-        // 播放器音符事件回调：把音符转换为游戏按键；若游戏窗口已失焦则停止播放，避免音阶错乱
+        // 播放器音符事件回调，把音符转换为游戏按键，游戏窗口失焦时停止播放以避免音阶错乱
+        // sender：播放器实例，本方法未使用；e：播放到的MIDI事件参数
         private void OnNoteEvent(object sender, MidiEventPlayedEventArgs e) {
             switch (e.Event.EventType) {
                 case MidiEventType.NoteOn:
@@ -507,7 +527,8 @@ namespace ShawzinBot.ViewModels {
             }
         }
 
-        // 外部MIDI输入设备事件回调：实时把弹奏的音符转发到游戏
+        // 外部MIDI输入设备事件回调，把实时弹奏的音符转发到游戏
+        // sender：MIDI输入设备实例，本方法未使用；e：接收到的MIDI事件参数
         private void OnNoteEvent(object sender, MidiEventReceivedEventArgs e) {
             if (e.Event.EventType != MidiEventType.NoteOn) return;
 
@@ -517,13 +538,15 @@ namespace ShawzinBot.ViewModels {
             ActionManager.PlayNote(note, EnableVibrato, TransposeNotes);
         }
 
-        // 视图注销时解绑语言切换事件，避免泄漏
+        // 视图注销时解绑语言切换事件，避免对象无法回收
+        // close：为真表示视图正在关闭而非仅切换离开
         protected override void OnDeactivate(bool close) {
             if (close) LanguageManager.LanguageChanged -= OnLanguageChanged;
             base.OnDeactivate(close);
         }
 
-        // 由程序回写进度条，标记忽略本次变更以防止触发播放跳转
+        // 由程序回写进度条，先置位忽略标记以防止触发播放跳转
+        // value：进度条要显示的秒数位置
         private void UpdateSlider(double value) {
             _ignoreSliderChange = true;
             SongSlider = value;
