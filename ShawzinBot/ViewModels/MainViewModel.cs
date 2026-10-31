@@ -60,6 +60,9 @@ namespace ShawzinBot.ViewModels {
         #endregion
 
         #region Private Variables
+        
+        // 错误日志输出路径
+        private string _errorLogPath = Path.GetFullPath("./shawzinbot-error-log.txt");
 
         // 歌曲名称的后备字段
         private string _songName;
@@ -340,6 +343,9 @@ namespace ShawzinBot.ViewModels {
             } catch (Exception e) {
                 ThemedMessageBox.Show(string.Format(LanguageManager.GetString("ErrorMessageFormat"), e),
                     LanguageManager.GetString("ErrorTitle"));
+                ThemedMessageBox.Show(string.Format(LanguageManager.GetString("ErrorMessageWrote"), _errorLogPath),
+                    LanguageManager.GetString("ErrorTitle"));
+                File.WriteAllText(_errorLogPath, e.ToString());
                 ClearMidi();
                 HistoryMusicPath = "";
                 return;

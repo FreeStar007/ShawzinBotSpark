@@ -22,5 +22,6 @@
     <sys:String x:Key="ScaleName8">Pentatonic Major</sys:String>
     <sys:String x:Key="ErrorTitle">Error</sys:String>
     <sys:String x:Key="ErrorMessageFormat">An error occurred: {0}</sys:String>
+    <sys:String x:Key="ErrorMessageWrote">The error was written to: {0}</sys:String>
     <sys:String x:Key="DialogOk">OK</sys:String>
 </ResourceDictionary>

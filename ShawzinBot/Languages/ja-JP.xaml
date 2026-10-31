@@ -22,5 +22,6 @@
     <sys:String x:Key="ScaleName8">五声長音階</sys:String>
     <sys:String x:Key="ErrorTitle">エラー</sys:String>
     <sys:String x:Key="ErrorMessageFormat">エラーが発生しました：{0}</sys:String>
+    <sys:String x:Key="ErrorMessageWrote">エラーが書き込まれました：{0}</sys:String>
     <sys:String x:Key="DialogOk">はい</sys:String>
 </ResourceDictionary>
