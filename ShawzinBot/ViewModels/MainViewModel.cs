@@ -414,9 +414,9 @@ namespace ShawzinBot.ViewModels {
                 _midiFile.Chunks.Clear();
                 _midiFile.Chunks.Add(_firstTrack);
 
-                // 只把勾选中的音轨加入播放集合
+                // 只把勾选中的音轨加入播放集合；首轨已在上方固定添加，这里跳过以免重复播放
                 foreach (var trackModel in MidiTracks)
-                    if (trackModel.IsChecked)
+                    if (trackModel.IsChecked && trackModel.Track != _firstTrack)
                         _midiFile.Chunks.Add(trackModel.Track);
 
                 _playback = _midiFile.GetPlayback();
